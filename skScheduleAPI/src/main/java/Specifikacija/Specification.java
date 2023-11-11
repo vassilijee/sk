@@ -9,7 +9,7 @@ public interface Specification {
     //kreiranje rasporeda
     void initRaspored(String path);
 
-    void addRoom(String naziv, Map<String, String> equipment);
+    void addRoom(String podaci);
 
     void addTermin(String podaci);
 

@@ -37,12 +37,11 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     /**
      * addRoom sluzi da se dodaju prostori u metapodatke
      *
-     * @param naziv     Podaci o prostoru koji se dodaje.
-     * @param equipment Podaci o prostoru koji se dodaje.
+     * @param podaci     Podaci o prostoru koji se dodaje.
      *
      */
     @Override
-    public void addRoom(String naziv, Map<String, String> equipment) {
+    public void addRoom(String podaci) {
 
     }
 
@@ -50,6 +49,7 @@ public abstract class SpecifikacijaRasporeda implements Specification {
      * addTermin sluzi za dodavanje novog termina u raspored.
      *
      * @param podaci Podaci o temrinu koji se dodaje.
+     *
      */
     @Override
     public void addTermin(String podaci) {

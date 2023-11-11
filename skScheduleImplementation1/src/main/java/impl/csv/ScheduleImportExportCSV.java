@@ -31,13 +31,22 @@ public class ScheduleImportExportCSV extends SpecifikacijaRasporeda {
     }
 
     @Override
-    public void addRoom(String naziv, Map<String, String> equipment) {
-        dodajSobu(naziv, equipment);
+    public void addRoom(String podaci) {
+        List<String> podaciList = new LinkedList<>();
+        podaciList = Arrays.asList(podaci.split(" ", 2));
+        String naziv = podaciList.get(0);
+        Map<String, String> equipmentMapa = new HashMap<>();
+
+        for (String equipment : podaciList) {
+            if (!equipment.contains(naziv))
+                equipmentMapa.put(StringUtils.substringBefore(equipment, ":"), StringUtils.substringAfter(equipment, ":"));
+        }
+        dodajSobu(naziv, equipmentMapa);
     }
 
     private void dodajSobu(String naziv, Map<String, String> equipment) {
         for (Room room : getSveSobe()) {
-            if (room.getNaziv().equals(naziv) ){
+            if (room.getNaziv().equals(naziv)) {
                 System.out.println("Soba pod tim imeno vec postoji. ");
                 return;
             }
@@ -51,12 +60,79 @@ public class ScheduleImportExportCSV extends SpecifikacijaRasporeda {
 
     @Override
     public void addTermin(String podaci) {
+        String start;
+        String end;
+        String roomNaziv;
+        Map<String, String> additional = new HashMap<>();
+
+        List<String> podaciList = new LinkedList<>();
+        podaciList = Arrays.asList(podaci.split(";", 4));
+
+        start = StringUtils.substringBefore(podaciList.get(0), " -");
+        end = StringUtils.substringAfter(podaciList.get(0), "- ");
+
+        roomNaziv = podaciList.get(1).trim();
+
+        for (int i = 2; i < podaciList.size(); i++) {
+            additional.put(StringUtils.substringBefore(podaciList.get(i).trim(), ":"), StringUtils.substringAfter(podaciList.get(i).trim(), ":"));
+        }
+
+
+        dodajNoviTermin(start, end, roomNaziv, additional);
+    }
+
+    //  https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
+    public void dodajNoviTermin(String start, String end, String roomNaziv, Map<String, String> additional) {
+        Termin tmpTermin = new Termin();
+        Room tmpRoom = new Room(roomNaziv);
+        // provera da li postoji termin sa istim dataTime range i nazivom prostorije
+        tmpTermin.setStart(LocalDateTime.parse(start, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
+        tmpTermin.setEnd(LocalDateTime.parse(end, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
+        tmpTermin.setRoom(tmpRoom);
+
+        if (proveraPreklapanjaTermina(tmpTermin) != null) {
+            System.out.println("U rasporedu postoji termin: " + proveraPreklapanjaTermina(tmpTermin));
+        }
+
+        proveraPostojiLiZadataSoba(roomNaziv);
+        // zamena soba, postavljanje prave instance sobe pod takvim imenom (zbog equipmenta)
         for (Room room : getSveSobe()) {
-            if (room.getNaziv().equals("ASDASD")) {
-                //termin.setRoom(room);
+            if (room.equals(tmpRoom)) tmpTermin.setRoom(room);
+        }
+
+        tmpTermin.setAdditional(additional);
+        getRaspored().add(tmpTermin);
+
+        System.out.println("Dodat je novi termin: \n" + tmpTermin);
+    }
+
+    private boolean proveraPostojiLiZadataSoba(String roomNaziv) {
+        boolean flag = false;
+        for (Room room : getSveSobe()) {
+            if (room.getNaziv().equals(roomNaziv)) {
+                flag = true;
             }
         }
+        if (!flag) {
+            System.out.println("Prostor pod takvim nazivom ne postoji. ");
+        }
+        return false;
     }
+
+    private Termin proveraPreklapanjaTermina(Termin termin) {
+        LocalDateTime maxOdStarta;
+        LocalDateTime minOdEnda;
+        for (Termin terminIzRasporeda : getRaspored()) {
+            maxOdStarta = termin.getStart().isAfter(terminIzRasporeda.getStart()) ? termin.getStart() : terminIzRasporeda.getStart();
+            minOdEnda = termin.getEnd().isBefore(terminIzRasporeda.getEnd()) ? termin.getEnd() : terminIzRasporeda.getEnd();
+            if (maxOdStarta.isBefore(minOdEnda) && terminIzRasporeda.getRoom().getNaziv().equals(termin.getRoom().getNaziv())) {
+                //System.out.println("U rasporedu postoji termin: " + terminIzRasporeda);
+                return terminIzRasporeda;
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public void deleteTermin(String podaci) {
