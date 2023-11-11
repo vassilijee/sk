@@ -3,7 +3,6 @@ package Termin;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -15,16 +14,16 @@ public class Room {
     private String naziv;
     private Map<String, String> equipment;
 
-    public Room(){
+    public Room() {
         this.equipment = new HashMap<>();
     }
 
-    public Room(String naziv){
+    public Room(String naziv) {
         this.naziv = naziv;
         this.equipment = new HashMap<>();
     }
 
-    public Room(String naziv, Map<String,String> equipment) {
+    public Room(String naziv, Map<String, String> equipment) {
         this.naziv = naziv;
         this.equipment = equipment;
     }

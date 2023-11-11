@@ -1,8 +1,8 @@
 package Specifikacija;
 
-import Load.Load;
-import Load.JSONLoad;
 import Load.CSVLoad;
+import Load.JSONLoad;
+import Load.Load;
 import Termin.Room;
 import Termin.Termin;
 import lombok.Getter;
@@ -50,8 +50,7 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     /**
      * addRoom sluzi da se dodaju prostori u metapodatke
      *
-     * @param podaci     Podaci o prostoru koji se dodaje.
-     *
+     * @param podaci Podaci o prostoru koji se dodaje.
      */
     @Override
     public void addRoom(String podaci) {
@@ -62,7 +61,6 @@ public abstract class SpecifikacijaRasporeda implements Specification {
      * addTermin sluzi za dodavanje novog termina u raspored.
      *
      * @param podaci Podaci o temrinu koji se dodaje.
-     *
      */
     @Override
     public void addTermin(String podaci) {
@@ -122,18 +120,18 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     @Override
     public boolean loadData(String path, String configPath) {
         initRaspored("meta.txt");
-        if(path.substring(path.indexOf('.')+1).equals("csv")){
+        if (path.substring(path.indexOf('.') + 1).equals("csv")) {
             Load loader = new CSVLoad();
             try {
-                loader.load(path,configPath,this);
+                loader.load(path, configPath, this);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             return true;
-        } else if(path.substring(path.indexOf('.')+1).equals("json")){
+        } else if (path.substring(path.indexOf('.') + 1).equals("json")) {
             Load loader = new JSONLoad();
             try {
-                loader.load(path,configPath,this);
+                loader.load(path, configPath, this);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

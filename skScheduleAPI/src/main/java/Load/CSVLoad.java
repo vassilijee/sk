@@ -1,4 +1,5 @@
 package Load;
+
 import Specifikacija.SpecifikacijaRasporeda;
 import Termin.Room;
 import Termin.Termin;
@@ -60,5 +61,4 @@ public class CSVLoad extends Load {
             specifikacijaRaspored.getRaspored().add(termin);
         }
     }
-
 }

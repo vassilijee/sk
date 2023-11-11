@@ -3,7 +3,6 @@ package Specifikacija;
 import Termin.Termin;
 
 import java.util.List;
-import java.util.Map;
 
 public interface Specification {
     //kreiranje rasporeda

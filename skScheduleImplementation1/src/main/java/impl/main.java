@@ -20,8 +20,10 @@ public class main {
         equipment.put("mikorfon", "DADA");
         equipment.put("Kompjuter", "DADA");
 
-        //raspored.addRoom("RAFFFFFF racunar:DA mikrafon:DA");
-        raspored.addTermin("29.10.2023 23:31 - 29.10.2023 23:40; RAF2; Predmet:SK; Profesor:Manojlo Manojlo");
+        raspored.addRoom("RAFFFFFF racunar:DA mikrafon:DA");
+        raspored.addTermin("30.11.2023 23:31 - 30.11.2023 23:40; RAF2; Predmet:SK; Profesor:Manojlo Manojlo");
+        raspored.addTermin("30.12.2023 23:31 - 30.12.2023 23:40; RAF2; Predmet:SK; Profesor:Manojlo Manojlo");
 
+        raspored.exportData("asd.csv");
     }
 }

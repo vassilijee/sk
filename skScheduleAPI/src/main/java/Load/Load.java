@@ -1,15 +1,17 @@
 package Load;
 
+import Specifikacija.SpecifikacijaRasporeda;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import Specifikacija.SpecifikacijaRasporeda;
 
 public abstract class Load {
     public abstract void load(String path, String configpath, SpecifikacijaRasporeda specifikacijaRaspored) throws IOException;
+
     public static List<ConfigLoad> readConfig(String filePath) throws FileNotFoundException {
         List<ConfigLoad> mappings = new ArrayList<>();
 

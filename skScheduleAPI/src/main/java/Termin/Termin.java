@@ -36,12 +36,7 @@ public class Termin {
 
     @Override
     public String toString() {
-        return "Termin{" +
-                "start=" + start +
-                ", end=" + end +
-                ", room=" + room +
-                ", additional=" + additional +
-                '}' + '\n';
+        return "Termin{" + "start=" + start + ", end=" + end + ", room=" + room + ", additional=" + additional + '}' + '\n';
     }
 
 
