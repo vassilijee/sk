@@ -9,7 +9,6 @@ import java.util.Map;
 
 @Getter
 @Setter
-
 public class Termin {
 
     private LocalDateTime start;
@@ -17,7 +16,7 @@ public class Termin {
     private Room room;
     private Map<String, String> additional;
 
-    public Termin(){
+    public Termin() {
         this.additional = new HashMap<>();
     }
 
@@ -34,4 +33,16 @@ public class Termin {
         this.room = room;
         this.additional = additional;
     }
+
+    @Override
+    public String toString() {
+        return "Termin{" +
+                "start=" + start +
+                ", end=" + end +
+                ", room=" + room +
+                ", additional=" + additional +
+                '}' + '\n';
+    }
+
+
 }

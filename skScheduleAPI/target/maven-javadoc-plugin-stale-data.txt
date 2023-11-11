@@ -1,0 +1,55 @@
+@options
+@packages
+-classpath
+'/Users/Vasilije/.m2/repository/org/projectlombok/lombok/1.18.26/lombok-1.18.26.jar'
+-encoding
+'UTF-8'
+-private
+-source
+'11'
+-sourcepath
+'/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/src/main/java:/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/generated-sources/annotations'
+-author
+-bottom
+'Copyright &#169; 2023. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'skScheduleAPI 1.0-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/en/java/javase/11/docs/api' '/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/javadoc-bundle-options'
+-nohelp
+-use
+-version
+-windowtitle
+'skScheduleAPI 1.0-SNAPSHOT API'
+Specifikacija
+Termin
+/Users/Vasilije/.m2/repository/org/projectlombok/lombok/1.18.26/lombok-1.18.26.jar = 1699379809305
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/src/main/java = 1699380384418
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/generated-sources/annotations = 1699562911176
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/constant-values.html = 1699704126170
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/member-search-index.zip = 1699704126194
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/overview-tree.html = 1699704126184
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/index.html = 1699704126203
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/.DS_Store = 1699635977386
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/package-search-index.js = 1699704126191
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/jquery-ui.overrides.css = 1699704126211
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/package-search-index.zip = 1699704126193
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/type-search-index.zip = 1699704126193
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/index-all.html = 1699704126195
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/allpackages-index.html = 1699704126198
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/deprecated-list.html = 1699704126200
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/member-search-index.js = 1699704126193
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/allclasses.html = 1699704126201
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/script.js = 1699704126206
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/stylesheet.css = 1699704126205
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/overview-summary.html = 1699704126203
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/element-list = 1699704126158
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/allclasses-index.html = 1699704126197
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/type-search-index.js = 1699704126193
+/Users/Vasilije/Documents/Fakultet/5. Semestar/Softverske komponente/projekat/skScheduleAPI/target/site/apidocs/search.js = 1699704126206
