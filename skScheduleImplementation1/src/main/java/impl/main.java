@@ -1,34 +1,37 @@
 package impl;
 
-import impl.csv.ScheduleImportExportCSV;
-
 import java.util.HashMap;
 
 public class main {
     public static void main(String[] args) {
-        ScheduleImportExportCSV raspored = new ScheduleImportExportCSV();
+        Implementation1 raspored = new Implementation1();
 
-        // za csv radi sve ispod, za json samo load data
-        //raspored.loadData("termini.csv", "config.txt");
+        raspored.loadData("termini.csv", "config.txt");
         //raspored.loadData("termini.json", "config.txt");
 
-//
-//        System.out.println("\nOPIS PROSTORA (METADATA): \n" + raspored);
-//
-        System.out.println("\nUcitan raspored: \n" + raspored.getRaspored());
-//
-//        HashMap<String, String> equipment = new HashMap<>();
-//        equipment.put("mikorfon", "DADA");
-//        equipment.put("Kompjuter", "DADA");
-//
-//        raspored.addRoom("RAFFFFFF racunar:DA mikrafon:DA");
-//        raspored.addTermin("30.11.2023 23:31 - 30.11.2023 23:40; RAF2; Predmet:SK; Profesor:Manojlo Manojlo");
-//        raspored.addTermin("30.12.2023 23:31 - 30.12.2023 23:40; RAF2; Predmet:SK; Profesor:Manojlo Manojlo");
-//
-//        raspored.exportData("asd.csv");
+        System.out.println("\nOPIS PROSTORA (METADATA): \n" + raspored);
+        System.out.println("Ucitan raspored: \n" + raspored.getRaspored());
 
+        //addRoom()
+        HashMap<String, String> equipment = new HashMap<>();
+        equipment.put("mikrafon", "DADA");
+        equipment.put("Kompjuter", "DADA");
+        raspored.addRoom("RAF21", equipment);
 
+        //addTermin()
+        raspored.addTermin("30.11.2023 23:31 - 30.11.2023 23:40; RAF21; Predmet:Aaaaaaaaa; Profesor:UUUUU AAAAAA");
+        raspored.addTermin("30.12.2023 23:31 - 30.12.2023 23:40; RAF2; Predmet:SK; Profesor:Manojlo Mano");
 
+        //exportTermin()
+        raspored.exportData("asd.csv");
+
+        //deleteTermin()
+        raspored.deleteTermin("30.12.2023 23:31", "30.12.2023 23:40", "RAF2");
+        System.out.println("Raspored termina nakon brisania: \n" + raspored.getRaspored());
+
+        //moveTermin
+        raspored.moveTermin("30.11.2023 23:31 - 30.11.2023 23:40; RAF21|01.01.2023 10:00 - 01.01.2023 11:00; RAF6");
+        System.out.println("Raspored termina nakon izmene: \n" + raspored.getRaspored());
 
     }
 }
