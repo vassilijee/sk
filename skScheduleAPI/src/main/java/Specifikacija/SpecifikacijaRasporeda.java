@@ -13,12 +13,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 @Getter
 @Setter
@@ -50,11 +48,13 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     /**
      * addRoom sluzi da se dodaju prostori u metapodatke
      *
-     * @param podaci Podaci o prostoru koji se dodaje.
+     * @param naziv Naziv prostorije.
+     * @param equipment Neki dodatci prostorije
      */
     @Override
-    public void addRoom(String podaci) {
-
+    public void addRoom(String naziv, Map<String, String> equipment) {
+        Room room = new Room(naziv,equipment);
+        sveSobe.add(room);
     }
 
     /**
@@ -70,11 +70,13 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     /**
      * deleteTermin sluzi za brisanje zadatog termina iz rasporeda
      *
-     * @param podaci Podaci o terminu koji zelimo da obrisemo iz rasporeda.
+     * @param start Podaci o pocetku termina koji ce se obrisati.
+     * @param end Podaci o kraju termina koji ce se obrisati.
+     * @param ucionica Podaci o ucionici termina koji ce se obrisati.
      */
     @Override
-    public void deleteTermin(String podaci) {
-
+    public void deleteTermin(String start, String end, String ucionica) {
+        raspored.remove(nadjitermin(start,end,ucionica));
     }
 
     /**
@@ -208,5 +210,23 @@ public abstract class SpecifikacijaRasporeda implements Specification {
             }
         }
         scanner.close();
+    }
+
+    public Room nadjisobupoImenu(String naziv){
+        for(Room room:sveSobe){
+            if(room.getNaziv().equalsIgnoreCase(naziv))
+                return room;
+        }
+        return null;
+    }
+
+    public Termin nadjitermin(String start, String end, String ucionica){
+        for(Termin termin:raspored){
+            if(termin.getStart().equals(LocalDateTime.parse(start, DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")))
+                    && termin.getEnd().equals(LocalDateTime.parse(end, DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")))
+                    && termin.getRoom().equals(nadjisobupoImenu(ucionica)))
+                return termin;
+        }
+        return null;
     }
 }

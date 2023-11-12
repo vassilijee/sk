@@ -3,16 +3,17 @@ package Specifikacija;
 import Termin.Termin;
 
 import java.util.List;
+import java.util.Map;
 
 public interface Specification {
     //kreiranje rasporeda
     void initRaspored(String path);
 
-    void addRoom(String podaci);
+    void addRoom(String naziv, Map<String, String> equipment);
 
     void addTermin(String podaci);
 
-    void deleteTermin(String podaci);
+    void deleteTermin(String start, String end, String ucionica);
 
     void moveTermin(String podaci);
 
