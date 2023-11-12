@@ -32,6 +32,7 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     private LocalDate vaziOd;
     private LocalDate vaziDo;
     private List<LocalDate> neradniDani = new ArrayList<>();
+    private DateTimeFormatter formatDatuma;
 
     /**
      * initRaspored sluzi za inicijalizaciju rasporeda.
@@ -225,7 +226,10 @@ public abstract class SpecifikacijaRasporeda implements Specification {
 
     public Termin nadjiTermin(String start, String end, String room) {
         for (Termin termin : raspored) {
-            if (termin.getStart().equals(LocalDateTime.parse(start, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))) && termin.getEnd().equals(LocalDateTime.parse(end, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))) && termin.getRoom().equals(nadiSobuPoImenu(room)))
+            System.out.println(formatDatuma);
+            if (termin.getStart().equals(LocalDateTime.parse(start, formatDatuma))
+                    && termin.getEnd().equals(LocalDateTime.parse(end, formatDatuma))
+                    && termin.getRoom().equals(nadiSobuPoImenu(room)))
                 return termin;
         }
         return null;

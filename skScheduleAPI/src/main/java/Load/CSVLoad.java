@@ -29,6 +29,7 @@ public class CSVLoad extends Load {
         FileReader fileReader = new FileReader(path);
         CSVParser parser = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(fileReader);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(mappings.get(-1));
+        specifikacijaRaspored.setFormatDatuma(formatter);
 
         for (CSVRecord record : parser) {
             Termin termin = new Termin();

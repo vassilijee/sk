@@ -28,34 +28,6 @@ public class Implementation1 extends SpecifikacijaRasporeda {
         }
     }
 
-//    @Override
-//    public void addRoom(String podaci) {
-//        List<String> podaciList;
-//        podaciList = Arrays.asList(podaci.split(" ", 2));
-//        String naziv = podaciList.get(0);
-//        Map<String, String> equipmentMapa = new HashMap<>();
-//
-//        for (String equipment : podaciList) {
-//            if (!equipment.contains(naziv))
-//                equipmentMapa.put(StringUtils.substringBefore(equipment, ":"), StringUtils.substringAfter(equipment, ":"));
-//        }
-//        dodajSobu(naziv, equipmentMapa);
-//    }
-
-    private void dodajSobu(String naziv, Map<String, String> equipment) {
-        for (Room room : getSveSobe()) {
-            if (room.getNaziv().equals(naziv)) {
-                System.out.println("Soba pod tim imeno vec postoji. ");
-                return;
-            }
-        }
-        Room newRoom = new Room();
-        newRoom.setNaziv(naziv);
-        newRoom.setEquipment(equipment);
-        getSveSobe().add(newRoom);
-        System.out.println(getSveSobe());
-    }
-
     @Override
     public void addTermin(String podaci) {
         String start;
@@ -108,13 +80,14 @@ public class Implementation1 extends SpecifikacijaRasporeda {
         boolean flag = false;
         for (Room room : getSveSobe()) {
             if (room.getNaziv().equals(roomNaziv)) {
-                flag = true;
+                return true;
             }
         }
         if (!flag) {
             System.out.println("Prostor pod takvim nazivom ne postoji. ");
+            return false;
         }
-        return false;
+        return true;
     }
 
     private Termin proveraPreklapanjaTermina(Termin termin) {
@@ -132,31 +105,6 @@ public class Implementation1 extends SpecifikacijaRasporeda {
     }
 
 
-//    @Override
-//    public void deleteTermin(String podaci) {
-//
-//    }
-
-    @Override
-    public List<Termin> pretragaTermina(String kriterijum, boolean zauzetost) {
-        return null;
-    }
-
-    @Override
-    public boolean provaraZauzetosti(String kriterijum) {
-        return false;
-    }
-
-//    @Override
-//    public boolean loadData(String path, String configPath) {
-//        try {
-//            loadApache(path, configPath);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return true;
-//    }
-
     @Override
     public boolean exportData(String s) {
         File csvFile = new File(s);
@@ -164,10 +112,6 @@ public class Implementation1 extends SpecifikacijaRasporeda {
             FileWriter fileWriter = new FileWriter(csvFile);
             for (Termin termin : getRaspored()) {
                 StringBuilder line = new StringBuilder();
-
-//                if (getRaspored().get(getRaspored().size() - 1).equals(termin)) {
-//                    break;
-//                }
                 line.append(termin);
                 fileWriter.write(line.toString());
 
@@ -245,14 +189,60 @@ public class Implementation1 extends SpecifikacijaRasporeda {
                 getRaspored()) {
             additionalOdStarog = terminIzRasporeda.getAdditional();
         }
-
         System.out.println("MENJANJE\nMenja se: \n" + tmpTerminZaBrisanje + "\nza: \n" + tmpTerminNovi);
 
         deleteTermin(startOdZaBrisanje, endOdZaBrisanje, roomNazivOdZaBrisanje);
         dodajNoviTermin(startOdZeljeniNovi, endOdZeljeniNovi, roomNazivOdZeljeniNovi, additionalOdStarog);
 
         return true;
-
     }
+
+    @Override
+    public List<Termin> pretragaTermina(String kriterijum, boolean zauzetost) {
+        return null;
+    }
+
+    @Override
+    public boolean provaraZauzetosti(String kriterijum) {
+        return false;
+    }
+
+
+//    @Override
+//    public boolean loadData(String path, String configPath) {
+//        try {
+//            loadApache(path, configPath);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return true;
+//    }
+//    @Override
+//    public void addRoom(String podaci) {
+//        List<String> podaciList;
+//        podaciList = Arrays.asList(podaci.split(" ", 2));
+//        String naziv = podaciList.get(0);
+//        Map<String, String> equipmentMapa = new HashMap<>();
+//
+//        for (String equipment : podaciList) {
+//            if (!equipment.contains(naziv))
+//                equipmentMapa.put(StringUtils.substringBefore(equipment, ":"), StringUtils.substringAfter(equipment, ":"));
+//        }
+//        dodajSobu(naziv, equipmentMapa);
+//    }
+
+//    private void dodajSobu(String naziv, Map<String, String> equipment) {
+//        for (Room room : getSveSobe()) {
+//            if (room.getNaziv().equals(naziv)) {
+//                System.out.println("Soba pod tim imeno vec postoji. ");
+//                return;
+//            }
+//        }
+//        Room newRoom = new Room();
+//        newRoom.setNaziv(naziv);
+//        newRoom.setEquipment(equipment);
+//        getSveSobe().add(newRoom);
+//        System.out.println(getSveSobe());
+//    }
 }
 

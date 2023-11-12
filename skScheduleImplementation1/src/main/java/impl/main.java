@@ -6,7 +6,7 @@ public class main {
     public static void main(String[] args) {
         Implementation1 raspored = new Implementation1();
 
-        raspored.loadData("termini.csv", "config.txt");
+        raspored.loadData("terminii.csv", "config.txt");
         //raspored.loadData("termini.json", "config.txt");
 
         System.out.println("\nOPIS PROSTORA (METADATA): \n" + raspored);
