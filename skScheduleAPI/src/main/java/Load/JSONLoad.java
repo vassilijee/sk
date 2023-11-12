@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,21 +20,17 @@ public class JSONLoad extends Load {
     @Override
     public void load(String path, String configPath, SpecifikacijaRasporeda specifikacijaRaspored) throws IOException {
         List<ConfigLoad> columnLoading = readConfig(configPath);
-//        Map<Integer, String> mappings = new HashMap<>();
-//        for (ConfigLoad configMapping : columnLoading) {
-//            mappings.put(configMapping.getIndex(), configMapping.getPoSpec());
-//        }
-
-        // mora custom deserializer da se smisli
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        //TypeReference<Termin> listType = new TypeReference<List<Termin>>() {};
-        //List<Person> list = mapper.readValue(jsonString, listType);
 
 
+        File file = new File(path);
+        ObjectMapper mapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
 
-        System.out.println(columnLoading);
+        module.addDeserializer(Termin.class, new JSONDeserializer(columnLoading, specifikacijaRaspored.getSveSobe()));
+        mapper.registerModule(module);
+
+        specifikacijaRaspored.getRaspored().addAll(mapper.readValue(file, new TypeReference<List<Termin>>() {
+        }));
     }
 }
 

@@ -188,10 +188,11 @@ public abstract class SpecifikacijaRasporeda implements Specification {
                 int index = 0;
                 String equipmentName = "";
                 String equipmentVal = "";
+                line = scanner.nextLine();
                 while (!line.equals("ROOM_EQUIPMENT_ENDING")) {
                     tmpRoom.setNaziv(StringUtils.substringBetween(line, "-", "="));
                     line = StringUtils.substringAfter(line, "= ");
-                    List<String> roomEquipment = Arrays.asList(line.split(";"));
+                    String[] roomEquipment = line.split(";");
                     for (Room room : getSveSobe()) {
                         if (room.equals(tmpRoom)) {
                             index = getSveSobe().indexOf(room);

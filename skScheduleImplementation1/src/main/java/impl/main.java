@@ -7,15 +7,15 @@ import java.util.HashMap;
 public class main {
     public static void main(String[] args) {
         ScheduleImportExportCSV raspored = new ScheduleImportExportCSV();
-        raspored.initRaspored("meta.txt");
 
+        // za csv radi sve ispod, za json samo load data
+        //raspored.loadData("termini.csv", "config.txt");
+        //raspored.loadData("termini.json", "config.txt");
 
-            //*za .csv*/
-//        raspored.loadData("termini.csv", "config.txt");
 //
 //        System.out.println("\nOPIS PROSTORA (METADATA): \n" + raspored);
 //
-//        System.out.println("\nUcitan raspored: \n" + raspored.getRaspored());
+        System.out.println("\nUcitan raspored: \n" + raspored.getRaspored());
 //
 //        HashMap<String, String> equipment = new HashMap<>();
 //        equipment.put("mikorfon", "DADA");
@@ -27,7 +27,6 @@ public class main {
 //
 //        raspored.exportData("asd.csv");
 
-        raspored.loadData("termini.json", "config.txt");
 
 
 
