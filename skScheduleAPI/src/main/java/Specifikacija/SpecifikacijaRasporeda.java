@@ -226,7 +226,6 @@ public abstract class SpecifikacijaRasporeda implements Specification {
 
     public Termin nadjiTermin(String start, String end, String room) {
         for (Termin termin : raspored) {
-            System.out.println(formatDatuma);
             if (termin.getStart().equals(LocalDateTime.parse(start, formatDatuma))
                     && termin.getEnd().equals(LocalDateTime.parse(end, formatDatuma))
                     && termin.getRoom().equals(nadiSobuPoImenu(room)))

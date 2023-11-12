@@ -173,8 +173,8 @@ public class Implementation1 extends SpecifikacijaRasporeda {
 
         Termin tmpTerminZaBrisanje = new Termin();
         Room tmpRoomzaBrisanje = new Room(roomNazivOdZaBrisanje);
-        tmpTerminZaBrisanje.setStart(LocalDateTime.parse(startOdZaBrisanje, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
-        tmpTerminZaBrisanje.setEnd(LocalDateTime.parse(endOdZaBrisanje, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
+        tmpTerminZaBrisanje.setStart(LocalDateTime.parse(startOdZaBrisanje, getFormatDatuma()));
+        tmpTerminZaBrisanje.setEnd(LocalDateTime.parse(endOdZaBrisanje, getFormatDatuma()));
         tmpTerminZaBrisanje.setRoom(tmpRoomNovi);
 
         for (Room room :
