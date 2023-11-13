@@ -200,49 +200,88 @@ public class Implementation1 extends SpecifikacijaRasporeda {
     }
 
     @Override
-    public List<Termin> pretragaTermina(String start, String end, String roomName, Map<String, String> additional,  String dayOfTheWeek) {
-        List<Termin> terminiOdgovaraju = new ArrayList<>();
+    public List<Termin> pretragaTermina(String start, String end, String roomName, Map<String, String> additional, String dayOfTheWeek) {
+        List<Termin> presekOdgovarajucihTermina = new ArrayList<>();
+        List<Termin> terminiOdgovarajuStart = new ArrayList<>();
+        List<Termin> terminiOdgovarajuEnd = new ArrayList<>();
+        List<Termin> terminiOdgovarajuRoomName = new ArrayList<>();
+        List<Termin> terminiOdgovarajuAdditional = new ArrayList<>();
+        List<Termin> terminiOdgovarajuDayOfTheWeek = new ArrayList<>();
+
         for (Termin termin :
                 getRaspored()) {
             if (start != null &&
-                    !terminiOdgovaraju.contains(termin) &&
+                    !terminiOdgovarajuStart.contains(termin) &&
                     termin.getStart().equals(LocalDateTime.parse(start, getFormatDatuma()))) {
-                terminiOdgovaraju.add(termin);
+                terminiOdgovarajuStart.add(termin);
             }
             if (end != null &&
-                    !terminiOdgovaraju.contains(termin) &&
+                    !terminiOdgovarajuEnd.contains(termin) &&
                     termin.getEnd().equals(LocalDateTime.parse(end, getFormatDatuma()))) {
-                terminiOdgovaraju.add(termin);
+                terminiOdgovarajuEnd.add(termin);
             }
             if (roomName != null &&
-                    !terminiOdgovaraju.contains(termin) &&
+                    !terminiOdgovarajuRoomName.contains(termin) &&
                     termin.getRoom().getNaziv().equals(roomName)) {
-                terminiOdgovaraju.add(termin);
+                terminiOdgovarajuRoomName.add(termin);
             }
-            if (additional != null &&
-                    !terminiOdgovaraju.contains(termin)) {
-                for (Map.Entry<String, String> oneAdditional :
-                        additional.entrySet()) {
-                    if (termin.getAdditional().containsKey(oneAdditional.getKey()) &&
-                            termin.getAdditional().containsValue(oneAdditional.getValue())) {
-                        terminiOdgovaraju.add(termin);
+
+            if (additional != null && !terminiOdgovarajuAdditional.contains(termin)) {
+                boolean allEntriesMatch = true;
+
+                for (Map.Entry<String, String> oneAdditional : additional.entrySet()) {
+                    if (!termin.getAdditional().containsKey(oneAdditional.getKey()) ||
+                            !termin.getAdditional().get(oneAdditional.getKey()).equals(oneAdditional.getValue())) {
+                        // If any entry doesn't match, set the flag to false
+                        allEntriesMatch = false;
+                        break;
                     }
+                }
+
+                // If all entries in the additional map match, add the termin to the list
+                if (allEntriesMatch) {
+                    terminiOdgovarajuAdditional.add(termin);
                 }
             }
             // ne radi,  moram da idem sad, ako budes radila da znas
             if (dayOfTheWeek != null &&
-                    !terminiOdgovaraju.contains(termin) &&
+                    !terminiOdgovarajuDayOfTheWeek.contains(termin) &&
                     termin.getRoom().getNaziv().equals(roomName)) {
-                terminiOdgovaraju.add(termin);
+                terminiOdgovarajuDayOfTheWeek.add(termin);
             }
         }
-        return terminiOdgovaraju;
+
+
+        List<List<Termin>> listsToIntersect = Arrays.asList(
+                terminiOdgovarajuStart,
+                terminiOdgovarajuEnd,
+                terminiOdgovarajuRoomName,
+                terminiOdgovarajuAdditional,
+                terminiOdgovarajuDayOfTheWeek
+        );
+
+        // Remove null lists
+        List<List<Termin>> nonNullLists = new ArrayList<>();
+        for (List<Termin> list : listsToIntersect) {
+            if (!list.isEmpty()) {
+                nonNullLists.add(list);
+            }
+        }
+
+        // Perform intersection only if there are non-null lists
+        if (!nonNullLists.isEmpty()) {
+            presekOdgovarajucihTermina.addAll(nonNullLists.get(0));
+            nonNullLists.subList(1, nonNullLists.size()).forEach(presekOdgovarajucihTermina::retainAll);
+        }
+
+        return presekOdgovarajucihTermina;
     }
 
-//    @Override
-//    public boolean provaraZauzetosti(String kriterijum) {
-//        return false;
-//    }
+
+    @Override
+    public boolean provaraZauzetosti(String kriterijum) {
+        return false;
+    }
 
 
 //    @Override

@@ -37,6 +37,7 @@ public class main {
         //pretragaTermina()
         Map<String, String> additional = new HashMap<>();
         additional.put("Profesor", "Nikola Redzic");
-        System.out.println("Pronadjeni termini: \n" + raspored.pretragaTermina(null, null, null, additional, null));
+        additional.put("Predmet", "SK");
+        System.out.println("Pronadjeni termini: \n" + raspored.pretragaTermina("29.10.2023 15:15", null, null, additional, null));
     }
 }
