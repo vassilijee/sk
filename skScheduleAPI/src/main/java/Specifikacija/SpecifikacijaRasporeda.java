@@ -218,7 +218,7 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     }
 
     @Override
-    public List<Termin> pretragaTermina(String start, String end, String roomName, Map<String, String> additional) {
+    public List<Termin> pretragaTermina(String start, String end, String roomName, Map<String, String> additional,  String dayOfTheWeek) {
         return null;
     }
 

@@ -200,7 +200,7 @@ public class Implementation1 extends SpecifikacijaRasporeda {
     }
 
     @Override
-    public List<Termin> pretragaTermina(String start, String end, String roomName, Map<String, String> additional) {
+    public List<Termin> pretragaTermina(String start, String end, String roomName, Map<String, String> additional,  String dayOfTheWeek) {
         List<Termin> terminiOdgovaraju = new ArrayList<>();
         for (Termin termin :
                 getRaspored()) {
@@ -228,7 +228,12 @@ public class Implementation1 extends SpecifikacijaRasporeda {
                         terminiOdgovaraju.add(termin);
                     }
                 }
-
+            }
+            // ne radi,  moram da idem sad, ako budes radila da znas
+            if (dayOfTheWeek != null &&
+                    !terminiOdgovaraju.contains(termin) &&
+                    termin.getRoom().getNaziv().equals(roomName)) {
+                terminiOdgovaraju.add(termin);
             }
         }
         return terminiOdgovaraju;
