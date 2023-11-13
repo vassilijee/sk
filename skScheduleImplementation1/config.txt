@@ -1,4 +1,4 @@
--1 Datum MM/dd/yyyy HH:mm
+-1 Datum dd.MM.yyyy HH:mm
 1 Pocetak start
 2 Kraj end
 0 Ucionica place

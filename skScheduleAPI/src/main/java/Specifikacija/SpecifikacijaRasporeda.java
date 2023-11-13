@@ -16,7 +16,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 @Getter
 @Setter
@@ -29,6 +32,7 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     private LocalDate vaziOd;
     private LocalDate vaziDo;
     private List<LocalDate> neradniDani = new ArrayList<>();
+    private DateTimeFormatter formatDatuma;
 
     /**
      * initRaspored sluzi za inicijalizaciju rasporeda.
@@ -48,12 +52,12 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     /**
      * addRoom sluzi da se dodaju prostori u metapodatke
      *
-     * @param naziv Naziv prostorije.
+     * @param naziv     Naziv prostorije.
      * @param equipment Neki dodatci prostorije
      */
     @Override
     public void addRoom(String naziv, Map<String, String> equipment) {
-        Room room = new Room(naziv,equipment);
+        Room room = new Room(naziv, equipment);
         sveSobe.add(room);
     }
 
@@ -70,13 +74,14 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     /**
      * deleteTermin sluzi za brisanje zadatog termina iz rasporeda
      *
-     * @param start Podaci o pocetku termina koji ce se obrisati.
-     * @param end Podaci o kraju termina koji ce se obrisati.
+     * @param start    Podaci o pocetku termina koji ce se obrisati.
+     * @param end      Podaci o kraju termina koji ce se obrisati.
      * @param ucionica Podaci o ucionici termina koji ce se obrisati.
      */
+
     @Override
     public void deleteTermin(String start, String end, String ucionica) {
-        raspored.remove(nadjitermin(start,end,ucionica));
+        raspored.remove(nadjiTermin(start, end, ucionica));
     }
 
     /**
@@ -212,19 +217,23 @@ public abstract class SpecifikacijaRasporeda implements Specification {
         scanner.close();
     }
 
-    public Room nadjisobupoImenu(String naziv){
-        for(Room room:sveSobe){
-            if(room.getNaziv().equalsIgnoreCase(naziv))
-                return room;
+    @Override
+    public List<Termin> pretragaTermina(String start, String end, String roomName, Map<String, String> additional) {
+        return null;
+    }
+
+    public Room nadiSobuPoImenu(String naziv) {
+        for (Room room : sveSobe) {
+            if (room.getNaziv().equalsIgnoreCase(naziv)) return room;
         }
         return null;
     }
 
-    public Termin nadjitermin(String start, String end, String ucionica){
-        for(Termin termin:raspored){
-            if(termin.getStart().equals(LocalDateTime.parse(start, DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")))
-                    && termin.getEnd().equals(LocalDateTime.parse(end, DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")))
-                    && termin.getRoom().equals(nadjisobupoImenu(ucionica)))
+    public Termin nadjiTermin(String start, String end, String room) {
+        for (Termin termin : raspored) {
+            if (termin.getStart().equals(LocalDateTime.parse(start, formatDatuma))
+                    && termin.getEnd().equals(LocalDateTime.parse(end, formatDatuma))
+                    && termin.getRoom().equals(nadiSobuPoImenu(room)))
                 return termin;
         }
         return null;
