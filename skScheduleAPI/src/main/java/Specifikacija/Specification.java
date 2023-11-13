@@ -12,6 +12,7 @@ public interface Specification {
     void addRoom(String naziv, Map<String, String> equipment);
 
     void addTermin(String podaci);
+    void addTermin(String start, String end, String ucionica, Map<String, String> additional);
 
     void deleteTermin(String start, String end, String ucionica);
 
