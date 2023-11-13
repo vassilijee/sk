@@ -217,6 +217,11 @@ public abstract class SpecifikacijaRasporeda implements Specification {
         scanner.close();
     }
 
+    @Override
+    public List<Termin> pretragaTermina(String start, String end, String roomName, Map<String, String> additional) {
+        return null;
+    }
+
     public Room nadiSobuPoImenu(String naziv) {
         for (Room room : sveSobe) {
             if (room.getNaziv().equalsIgnoreCase(naziv)) return room;

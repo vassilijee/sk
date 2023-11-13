@@ -11,10 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Implementation1 extends SpecifikacijaRasporeda {
 
@@ -203,9 +200,44 @@ public class Implementation1 extends SpecifikacijaRasporeda {
     }
 
     @Override
-    public boolean provaraZauzetosti(String kriterijum) {
-        return false;
+    public List<Termin> pretragaTermina(String start, String end, String roomName, Map<String, String> additional) {
+        List<Termin> terminiOdgovaraju = new ArrayList<>();
+        for (Termin termin :
+                getRaspored()) {
+            if (start != null &&
+                    !terminiOdgovaraju.contains(termin) &&
+                    termin.getStart().equals(LocalDateTime.parse(start, getFormatDatuma()))) {
+                terminiOdgovaraju.add(termin);
+            }
+            if (end != null &&
+                    !terminiOdgovaraju.contains(termin) &&
+                    termin.getEnd().equals(LocalDateTime.parse(end, getFormatDatuma()))) {
+                terminiOdgovaraju.add(termin);
+            }
+            if (roomName != null &&
+                    !terminiOdgovaraju.contains(termin) &&
+                    termin.getRoom().getNaziv().equals(roomName)) {
+                terminiOdgovaraju.add(termin);
+            }
+            if (additional != null &&
+                    !terminiOdgovaraju.contains(termin)) {
+                for (Map.Entry<String, String> oneAdditional :
+                        additional.entrySet()) {
+                    if (termin.getAdditional().containsKey(oneAdditional.getKey()) &&
+                            termin.getAdditional().containsValue(oneAdditional.getValue())) {
+                        terminiOdgovaraju.add(termin);
+                    }
+                }
+
+            }
+        }
+        return terminiOdgovaraju;
     }
+
+//    @Override
+//    public boolean provaraZauzetosti(String kriterijum) {
+//        return false;
+//    }
 
 
 //    @Override

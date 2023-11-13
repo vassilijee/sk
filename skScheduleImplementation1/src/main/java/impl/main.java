@@ -1,6 +1,7 @@
 package impl;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class main {
     public static void main(String[] args) {
@@ -29,9 +30,13 @@ public class main {
         raspored.deleteTermin("30.12.2023 23:31", "30.12.2023 23:40", "RAF2");
         System.out.println("Raspored termina nakon brisania: \n" + raspored.getRaspored());
 
-        //moveTermin
+        //moveTermin()
         raspored.moveTermin("30.11.2023 23:31 - 30.11.2023 23:40; RAF21|01.01.2023 10:00 - 01.01.2023 11:00; RAF6");
         System.out.println("Raspored termina nakon izmene: \n" + raspored.getRaspored());
 
+        //pretragaTermina()
+        Map<String, String> additional = new HashMap<>();
+        additional.put("Profesor", "Nikola Redzic");
+        System.out.println("Pronadjeni termini: \n" + raspored.pretragaTermina(null, null, null, additional));
     }
 }
