@@ -118,6 +118,11 @@ public abstract class SpecifikacijaRasporeda implements Specification {
         return null;
     }
 
+    @Override
+    public List<Termin> pretragaTermina(String start, String end, String vremeod, String vremedo, String roomName, Map<String, String> additional, String dayOfTheWeek) {
+        return null;
+    }
+
     /**
      * proveraZauzetosti sluzi da proverimo da li zadati termin zauzet.
      *

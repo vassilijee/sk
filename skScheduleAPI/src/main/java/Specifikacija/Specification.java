@@ -21,6 +21,7 @@ public interface Specification {
     //pretrazivanje rasporeda
     List<Termin> pretragaTermina(String kriterijum, boolean zauzetost);
     List<Termin> pretragaTermina(String start, String end, String roomName, Map<String, String> additional, String dayOfTheWeek);
+    List<Termin> pretragaTermina(String start, String end, String vremeod, String vremedo,String roomName, Map<String, String> additional, String dayOfTheWeek);
 
     boolean provaraZauzetosti(String kriterijum);
 
