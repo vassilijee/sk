@@ -3,12 +3,14 @@ package impl;
 import Specifikacija.SpecifikacijaRasporeda;
 import Termin.Room;
 import Termin.Termin;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -104,18 +106,60 @@ public class Implementation1 extends SpecifikacijaRasporeda {
 
     @Override
     public boolean exportData(String s) {
-        File csvFile = new File(s);
-        try {
-            FileWriter fileWriter = new FileWriter(csvFile);
-            for (Termin termin : getRaspored()) {
-                StringBuilder line = new StringBuilder();
-                line.append(termin);
-                fileWriter.write(line.toString());
-
+        if (s.endsWith(".txt")) {
+            File txtFile = new File(s);
+            FileWriter fileWriter = null;
+            try {
+                fileWriter = new FileWriter(txtFile);
+                for (Termin termin : getRaspored()) {
+                    StringBuilder line = new StringBuilder();
+                    line.append(termin);
+                    fileWriter.write(line.toString());
+                }
+                fileWriter.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            fileWriter.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } else if (s.endsWith(".csv")) {
+            FileWriter fileWriter = null;
+            try {
+                fileWriter = new FileWriter(s);
+                CSVPrinter csvPrinter = new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
+
+                for (Termin termin : getRaspored()) {
+                    csvPrinter.printRecord(
+                            termin.getStart().toString(),
+                            termin.getEnd().toString(),
+                            termin.getRoom().getNaziv()
+                    );
+//                    for (Map.Entry<String, String> oneAdditional : termin.getAdditional().entrySet()) {
+//                        csvPrinter.print(oneAdditional.getValue());
+//                    }
+                }
+                csvPrinter.close();
+                fileWriter.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (s.endsWith(".json")) {
+            try {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                ObjectMapper mapper = new ObjectMapper();
+                FileWriter fileWriter = new FileWriter(s);
+
+                mapper.registerModule(new JavaTimeModule());
+                mapper.writeValue(out, getRaspored());
+
+
+                byte[] data = out.toByteArray();
+                fileWriter.write(new String(data));
+                fileWriter.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+
+            //System.out.println(new String(data));
         }
         return true;
     }

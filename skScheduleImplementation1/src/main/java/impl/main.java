@@ -25,6 +25,10 @@ public class main {
 
         //exportTermin()
         raspored.exportData("asd.csv");
+        raspored.exportData("asd.txt");
+        raspored.exportData("asd.json");
+
+
 
         //deleteTermin()
         raspored.deleteTermin("30.12.2023 23:31", "30.12.2023 23:40", "RAF2");
