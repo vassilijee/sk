@@ -143,7 +143,8 @@ public abstract class SpecifikacijaRasporeda implements Specification {
      */
     @Override
     public boolean loadData(String path, String configPath) {
-        initRaspored("meta.txt");
+        //mora u load jos meta da ide ili da se uvek pozove init pre load
+        //initRaspored("meta.txt");
         if (path.substring(path.indexOf('.') + 1).equals("csv")) {
             Load loader = new CSVLoad();
             try {
