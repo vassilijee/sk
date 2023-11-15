@@ -1,5 +1,3 @@
-package impl;
-
 import Specifikacija.SpecifikacijaRasporeda;
 
 import java.util.HashMap;
@@ -7,8 +5,7 @@ import java.util.Map;
 
 public class main {
     public static void main(String[] args) {
-        SpecifikacijaRasporeda raspored = null;
-        raspored.getRasporedList();
+        SpecifikacijaRasporeda raspored = new Implementation1();
         raspored.initRaspored("meta.txt");
 
         raspored.loadData("terminii.csv", "config.txt");

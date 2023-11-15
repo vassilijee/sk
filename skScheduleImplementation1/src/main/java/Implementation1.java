@@ -1,6 +1,5 @@
-package impl;
-
 import Specifikacija.SpecifikacijaRasporeda;
+import Specifikacija.SpecifikacijaRasporedaManager;
 import Termin.Room;
 import Termin.Termin;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +14,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Implementation1 extends SpecifikacijaRasporeda {
+
+    static {
+        SpecifikacijaRasporedaManager.registerExporter(new Implementation1());
+    }
+
+    public Implementation1() {
+        super();
+    }
 
     @Override
     public void initRaspored(String path) {

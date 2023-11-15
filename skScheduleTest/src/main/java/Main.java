@@ -1,5 +1,6 @@
 
-import impl.Implementation1;
+import Specifikacija.SpecifikacijaRasporeda;
+import Specifikacija.SpecifikacijaRasporedaManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +19,10 @@ public class Main {
     }
 
     public static void main(String[] args) throws ClassNotFoundException {
-        Implementation1 raspored = new Implementation1();
         //Implementation1 raspored = new Implementation1();
+        //Implementation1 raspored = new Implementation1();
+        Class.forName("Implementation1");
+        SpecifikacijaRasporeda raspored = SpecifikacijaRasporedaManager.getExporter();
         System.out.println("Dobrodosli u testnu aplikaciju za pravljenje rasporeda. " +
                 "\nIzaberite koju implementaciju zelite da koristite: ");
         String[] optionsEntry = {"1\t\t-\timpl1",

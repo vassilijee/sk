@@ -25,6 +25,7 @@ import java.util.Scanner;
 @Setter
 public abstract class SpecifikacijaRasporeda implements Specification {
     // KONSTRUKTOR ?
+    protected String implementationName;
     private List<Termin> raspored = new ArrayList<>();
     private LocalTime radnoVremeOd;
     private LocalTime radnoVremeDo;
@@ -33,6 +34,9 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     private LocalDate vaziDo;
     private List<LocalDate> neradniDani = new ArrayList<>();
     private DateTimeFormatter formatDatuma;
+
+    public SpecifikacijaRasporeda() {
+    }
 
     public List<Termin> getRasporedList() {
         if (raspored == null) raspored = new ArrayList<>();
