@@ -34,6 +34,12 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     private List<LocalDate> neradniDani = new ArrayList<>();
     private DateTimeFormatter formatDatuma;
 
+    public List<Termin> getRasporedList() {
+        if (raspored == null) raspored = new ArrayList<>();
+        return raspored;
+    }
+
+
     /**
      * initRaspored sluzi za inicijalizaciju rasporeda.
      * Dodacemo path ka metapodacima, gde cemo odrediti vremenska ogranicenja naseg rasporeda.
@@ -70,12 +76,13 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     public void addTermin(String podaci) {
 
     }
+
     /**
      * addTermin sluzi za dodavanje novog termina u raspored.
      *
-     * @param start Podaci o pocetku termina koji se dodaje.
-     * @param end Podaci o kraju termina koji se dodaje.
-     * @param ucionica Podaci o ucionici termina koji se dodaje.
+     * @param start      Podaci o pocetku termina koji se dodaje.
+     * @param end        Podaci o kraju termina koji se dodaje.
+     * @param ucionica   Podaci o ucionici termina koji se dodaje.
      * @param additional Podaci o dodatcima termina koji se dodaje.
      */
     @Override
@@ -236,7 +243,7 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     }
 
     @Override
-    public List<Termin> pretragaTermina(String start, String end, String roomName, Map<String, String> additional,  String dayOfTheWeek) {
+    public List<Termin> pretragaTermina(String start, String end, String roomName, Map<String, String> additional, String dayOfTheWeek) {
         return null;
     }
 

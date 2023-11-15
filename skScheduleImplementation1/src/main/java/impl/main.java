@@ -1,11 +1,14 @@
 package impl;
 
+import Specifikacija.SpecifikacijaRasporeda;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class main {
     public static void main(String[] args) {
-        Implementation1 raspored = new Implementation1();
+        SpecifikacijaRasporeda raspored = null;
+        raspored.getRasporedList();
         raspored.initRaspored("meta.txt");
 
         raspored.loadData("terminii.csv", "config.txt");

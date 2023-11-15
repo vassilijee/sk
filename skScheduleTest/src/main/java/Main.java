@@ -1,8 +1,10 @@
+
 import impl.Implementation1;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+
 
 public class Main {
     public static void printMenu(String[] options) {
@@ -15,7 +17,9 @@ public class Main {
         System.out.print("Choose your option : ");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException {
+        Implementation1 raspored = new Implementation1();
+        //Implementation1 raspored = new Implementation1();
         System.out.println("Dobrodosli u testnu aplikaciju za pravljenje rasporeda. " +
                 "\nIzaberite koju implementaciju zelite da koristite: ");
         String[] optionsEntry = {"1\t\t-\timpl1",
@@ -29,7 +33,6 @@ public class Main {
             option = scanner.nextLine();
             if (option.equals("1")) {
                 option = "asd";
-                Implementation1 raspored = new Implementation1();
                 while (!option.equals("back")) {
                     String[] optionsImpl1 = {"1\t - \tinitRaspored()",
                             "2\t - \tloadData()",
