@@ -3,7 +3,6 @@ package impl;
 import Specifikacija.SpecifikacijaRasporeda;
 import Termin.Room;
 import Termin.Termin;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.commons.csv.CSVFormat;
@@ -28,51 +27,74 @@ public class Implementation1 extends SpecifikacijaRasporeda {
     }
 
     @Override
-    public void addTermin(String podaci) {
-        String start;
-        String end;
-        String roomNaziv;
-        Map<String, String> additional = new HashMap<>();
-
-        List<String> podaciList;
-        podaciList = Arrays.asList(podaci.split(";", 4));
-
-        start = StringUtils.substringBefore(podaciList.get(0), " -");
-        end = StringUtils.substringAfter(podaciList.get(0), "- ");
-
-        roomNaziv = podaciList.get(1).trim();
-
-        for (int i = 2; i < podaciList.size(); i++) {
-            additional.put(StringUtils.substringBefore(podaciList.get(i).trim(), ":"), StringUtils.substringAfter(podaciList.get(i).trim(), ":"));
-        }
-
+    public void addTermin(String start, String end, String roomNaziv, Map<String, String> additional) {
+//        String start;
+//        String end;
+//        String roomNaziv;
+//        Map<String, String> additional = new HashMap<>();
+//
+//        List<String> podaciList;
+//        podaciList = Arrays.asList(podaci.split(";", 4));
+//
+//        start = StringUtils.substringBefore(podaciList.get(0), " -");
+//        end = StringUtils.substringAfter(podaciList.get(0), "- ");
+//
+//        roomNaziv = podaciList.get(1).trim();
+//
+//        for (int i = 2; i < podaciList.size(); i++) {
+//            additional.put(StringUtils.substringBefore(podaciList.get(i).trim(), ":"), StringUtils.substringAfter(podaciList.get(i).trim(), ":"));
+//        }
+//
 
         dodajNoviTermin(start, end, roomNaziv, additional);
     }
 
     //  https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
     public void dodajNoviTermin(String start, String end, String roomNaziv, Map<String, String> additional) {
-        Termin tmpTermin = new Termin();
-        Room tmpRoom = new Room(roomNaziv);
-        // provera da li postoji termin sa istim dataTime range i nazivom prostorije
-        tmpTermin.setStart(LocalDateTime.parse(start, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
-        tmpTermin.setEnd(LocalDateTime.parse(end, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
-        tmpTermin.setRoom(tmpRoom);
+        LocalDateTime startDateTime = LocalDateTime.parse(start, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
+        LocalDateTime endDateTime = LocalDateTime.parse(end, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
+        boolean flagPostojiSoba = true;
 
-        if (proveraPreklapanjaTermina(tmpTermin) != null) {
-            System.out.println("U rasporedu postoji termin: " + proveraPreklapanjaTermina(tmpTermin));
+        for (Room room :
+                getSveSobe()) {
+            if (room.getNaziv().equals(roomNaziv)) {
+                flagPostojiSoba = false;
+            }
         }
 
-        proveraPostojiLiZadataSoba(roomNaziv);
-        // zamena soba, postavljanje prave instance sobe pod takvim imenom (zbog equipmenta)
-        for (Room room : getSveSobe()) {
-            if (room.equals(tmpRoom)) tmpTermin.setRoom(room);
+
+        if (getNeradniDani().contains(startDateTime.toLocalDate()) ||
+                getNeradniDani().contains(endDateTime.toLocalDate()) ||
+                startDateTime.toLocalTime().isAfter(getRadnoVremeDo()) ||
+                endDateTime.toLocalTime().isAfter(getRadnoVremeDo()) ||
+                startDateTime.toLocalTime().isBefore(getRadnoVremeOd()) ||
+                flagPostojiSoba) {
+            System.out.println("Termin je u nedozvoljeno vreme ili u nepostojecoj sobi. ");
+            System.out.println(flagPostojiSoba);
+
+        } else {
+            Termin tmpTermin = new Termin();
+            Room tmpRoom = new Room(roomNaziv);
+            // provera da li postoji termin sa istim dataTime range i nazivom prostorije
+            tmpTermin.setStart(LocalDateTime.parse(start, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
+            tmpTermin.setEnd(LocalDateTime.parse(end, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
+            tmpTermin.setRoom(tmpRoom);
+
+            if (proveraPreklapanjaTermina(tmpTermin) != null) {
+                System.out.println("U rasporedu postoji termin: " + proveraPreklapanjaTermina(tmpTermin));
+            }
+
+            proveraPostojiLiZadataSoba(roomNaziv);
+            // zamena soba, postavljanje prave instance sobe pod takvim imenom (zbog equipmenta)
+            for (Room room : getSveSobe()) {
+                if (room.equals(tmpRoom)) tmpTermin.setRoom(room);
+            }
+
+            tmpTermin.setAdditional(additional);
+            getRaspored().add(tmpTermin);
+
+            System.out.println("Dodat je novi termin: \n" + tmpTermin);
         }
-
-        tmpTermin.setAdditional(additional);
-        getRaspored().add(tmpTermin);
-
-        System.out.println("Dodat je novi termin: \n" + tmpTermin);
     }
 
     private boolean proveraPostojiLiZadataSoba(String roomNaziv) {
