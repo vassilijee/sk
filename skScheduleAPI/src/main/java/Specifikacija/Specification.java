@@ -24,6 +24,7 @@ public interface Specification {
     List<Termin> pretragaTermina(String start, String end, String vremeod, String vremedo,String roomName, Map<String, String> additional, String dayOfTheWeek);
 
     boolean provaraZauzetosti(String kriterijum);
+    boolean provaraZauzetostiUcionice(String naziv, String start, String end);
 
     //ucitavanje i snimanje rasporeda
     boolean loadData(String path, String configPath);
