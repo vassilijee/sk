@@ -1,0 +1,13 @@
+TERMIN_RADNO_VREME 09:00 - 21:00
+ROOM_SVE RAF1, RAF2, RAF3, RAF4, RAF5, RAF6, RAF7
+TERMIN_VAZI_OD_DO 29.09.2023 - 14.01.2024
+TERMIN_NERADNI_DANI 07.01.2023, 08.01.2023
+ROOM_EQUIPMENT_BEGINNING
+-RAF1= racunar:DA;mikrofon:DA
+-RAF2= racunar:DA;mikrofon:DA
+-RAF3= racunar:NE;mikrofon:DA
+-RAF4= racunar:NE;mikrofon:DA
+-RAF5= racunar:DA;mikrofon:DA
+-RAF6= racunar:NE;mikrofon:DA
+-RAF7= racunar:DA;mikrofon:DA
+ROOM_EQUIPMENT_ENDING

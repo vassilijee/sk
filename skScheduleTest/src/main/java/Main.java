@@ -21,7 +21,7 @@ public class Main {
     public static void main(String[] args) throws ClassNotFoundException {
         //Implementation1 raspored = new Implementation1();
         //Implementation1 raspored = new Implementation1();
-        Class.forName("Implementation1");
+        Class.forName("Implementation2");
         SpecifikacijaRasporeda raspored = SpecifikacijaRasporedaManager.getExporter();
         System.out.println("Dobrodosli u testnu aplikaciju za pravljenje rasporeda. " +
                 "\nIzaberite koju implementaciju zelite da koristite: ");
@@ -54,7 +54,8 @@ public class Main {
                         System.out.println("initRaspred() - Inicijalizacija rasporeda (ucitavanje metapodataka). ");
                         System.out.println("\nUnesite putanju ka fajlu gde se nalaze metapodaci: ");
                         //option = scanner.nextLine();
-                        option = "/Users/Vasilije/Desktop/projekat_git/sk/skScheduleTest/impl1Resources/meta.txt";
+                        option = "C:\\Users\\Lana\\Desktop\\sk_git\\sk\\skScheduleTest\\impl2Resources\\meta.txt";
+                        //option = "/impl2Resources/meta.txt";
                         raspored.initRaspored(option);
 
                     } else if (option.equals("2")) {
@@ -63,10 +64,10 @@ public class Main {
                                 "\nKorisnik mora uneti i konfiguracioni fajl koji opisuje koji format za datume koristi i kako ce se mapirati zaglavlja iz fajla na polja nase klase. ");
                         System.out.println("\nUnesite putanju ka fajlu u kom se nalazi raspored: ");
                         //option = scanner.nextLine();
-                        option = "/Users/Vasilije/Desktop/projekat_git/sk/skScheduleTest/impl1Resources/terminii.csv";
+                        option = "C:\\Users\\Lana\\Desktop\\sk_git\\sk\\skScheduleTest\\impl2Resources\\termini.csv";
                         System.out.println("\nUnesite putanju ka konfiguracionom fajlu: ");
                         //String tmpOmption = scanner.nextLine();
-                        String tmpOmption = "/Users/Vasilije/Desktop/projekat_git/sk/skScheduleTest/impl1Resources/config.txt";
+                        String tmpOmption = "C:\\Users\\Lana\\Desktop\\sk_git\\sk\\skScheduleTest\\impl2Resources\\config.txt";
                         raspored.loadData(option, tmpOmption);
 
                     } else if (option.equals("3")) {
@@ -104,10 +105,10 @@ public class Main {
                         Map<String, String> additional = new HashMap<>();
 
                         System.out.println("addTermin() - Ucitavanje novih termina u raspored");
-                        System.out.println("\nUnesite datum i vreme pocetka u formatu kao u primeru - 31.12.2023 10:00: ");
+                        System.out.println("\nUnesite datum i vreme pocetka u formatu kao u primeru -  " + raspored.getFormatDatuma().toString());
                         start = scanner.nextLine();
                         //option = "12.12.2023 10:00";
-                        System.out.println("\nUnesite datum i vreme zavrsetka u formatu kao u primeru - 31.12.2023 10:00: ");
+                        System.out.println("\nUnesite datum i vreme zavrsetka u formatu kao u primeru - 12/31/2023 10:00 ");
                         end = scanner.nextLine();
                         //option = "12.12.2023 11:00";
                         System.out.println("\nUnesite prostoriju u kojoj zelite da zakazete termin: ");
@@ -157,7 +158,7 @@ public class Main {
                     } else if (option.equals("7")) {
 
                     } else if (option.equals("8")) {
-                        System.out.println(raspored.getRaspored());
+                        System.out.println(raspored.ispisRasporeda(raspored.getRaspored()));
 
                     } else if (option.equals("back")) {
                         break;
