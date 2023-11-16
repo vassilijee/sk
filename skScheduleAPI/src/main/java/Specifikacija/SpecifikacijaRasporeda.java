@@ -271,6 +271,10 @@ public abstract class SpecifikacijaRasporeda implements Specification {
         return null;
     }
 
+    public String ispisRasporeda(List<Termin> raspored) {
+       return raspored.toString();
+    }
+
     public Termin nadjiTermin(String start, String end, String room) {
         for (Termin termin : raspored) {
             if (termin.getStart().equals(LocalDateTime.parse(start, formatDatuma))

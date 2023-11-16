@@ -1,11 +1,9 @@
-package org.sk.impl2.implementacija;
-
 import Specifikacija.SpecifikacijaRasporeda;
-import Termin.Termin;
+import Specifikacija.SpecifikacijaRasporedaManager;
 import Termin.Room;
+import Termin.Termin;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-
 
 import java.io.File;
 import java.io.FileWriter;
@@ -19,6 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 public class Implementation2 extends SpecifikacijaRasporeda {
+    static {
+        SpecifikacijaRasporedaManager.registerExporter(new Implementation2());
+    }
+
+    public Implementation2() {
+        super();
+    }
+
     @Override
     public void addTermin(String start, String end, String ucionica, Map<String, String> additional) {
         Termin termin = new Termin(LocalDateTime.parse(start, getFormatDatuma()),
@@ -200,6 +206,7 @@ public class Implementation2 extends SpecifikacijaRasporeda {
                 '\n';
 
     }
+    @Override
     public String ispisRasporeda(List<Termin> raspored) {
         StringBuilder sb = new StringBuilder();
         for (Termin t:
@@ -208,6 +215,7 @@ public class Implementation2 extends SpecifikacijaRasporeda {
         }
         return sb.toString();
     }
+
 
     public String ispisiAdditional(Map<String,String> additional){
         StringBuilder sb = new StringBuilder();

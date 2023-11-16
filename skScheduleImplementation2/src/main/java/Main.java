@@ -1,6 +1,3 @@
-package org.sk.impl2;
-
-import org.sk.impl2.implementacija.Implementation2;
 
 import java.util.HashMap;
 import java.util.Map;
