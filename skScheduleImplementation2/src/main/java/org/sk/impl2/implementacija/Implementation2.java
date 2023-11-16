@@ -96,14 +96,17 @@ public class Implementation2 extends SpecifikacijaRasporeda {
                 getRaspored()) {
             if(t.getRoom().getNaziv().equalsIgnoreCase(naziv)) {
                if(t.getStart().isBefore(startd) && t.getEnd().isAfter(startd) && t.getAdditional().get("Dan").equalsIgnoreCase(dan)){
-                   if(t.getStart().getHour() <= startd.getHour() && t.getStart().getMinute() <= startd.getMinute()
-                        && t.getEnd().getHour() >= endd.getHour() && t.getEnd().getMinute() >= endd.getMinute())
+                   if(t.getStart().getHour() >= startd.getHour() && t.getStart().getMinute() >= startd.getMinute()
+                           && t.getEnd().getHour() >= endd.getHour() && t.getEnd().getMinute() >= endd.getMinute())
                        return true;
-                   if(t.getEnd().getHour() >= startd.getHour() && t.getEnd().getMinute() >= startd.getMinute()
-                        && t.getEnd().getHour() <= endd.getHour() && t.getEnd().getMinute() <= endd.getMinute())
+                   if(t.getEnd().getHour() > startd.getHour() && t.getEnd().getMinute() > startd.getMinute()
+                           && t.getEnd().getHour() < endd.getHour() && t.getEnd().getMinute() < endd.getMinute())
                        return true;
-                   if(t.getStart().getHour()<=endd.getHour() && t.getStart().getMinute() <= endd.getMinute()
-                        && t.getStart().getHour() >= startd.getHour() && t.getStart().getMinute() >= startd.getMinute())
+                   if(t.getStart().getHour()<endd.getHour() && t.getStart().getMinute() < endd.getMinute()
+                           && t.getStart().getHour() > startd.getHour() && t.getStart().getMinute() > startd.getMinute())
+                       return true;
+                   if(t.getStart().getHour() > startd.getHour() && t.getStart().getMinute() > startd.getMinute()
+                           && t.getEnd().getHour() < endd.getHour() && t.getEnd().getMinute() < endd.getMinute())
                        return true;
                }
             }
