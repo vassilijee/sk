@@ -35,24 +35,6 @@ public class Implementation1 extends SpecifikacijaRasporeda {
 
     @Override
     public void addTermin(String start, String end, String roomNaziv, Map<String, String> additional) {
-//        String start;
-//        String end;
-//        String roomNaziv;
-//        Map<String, String> additional = new HashMap<>();
-//
-//        List<String> podaciList;
-//        podaciList = Arrays.asList(podaci.split(";", 4));
-//
-//        start = StringUtils.substringBefore(podaciList.get(0), " -");
-//        end = StringUtils.substringAfter(podaciList.get(0), "- ");
-//
-//        roomNaziv = podaciList.get(1).trim();
-//
-//        for (int i = 2; i < podaciList.size(); i++) {
-//            additional.put(StringUtils.substringBefore(podaciList.get(i).trim(), ":"), StringUtils.substringAfter(podaciList.get(i).trim(), ":"));
-//        }
-//
-
         dodajNoviTermin(start, end, roomNaziv, additional);
     }
 
@@ -68,7 +50,6 @@ public class Implementation1 extends SpecifikacijaRasporeda {
                 flagPostojiSoba = false;
             }
         }
-
 
         if (getNeradniDani().contains(startDateTime.toLocalDate()) ||
                 getNeradniDani().contains(endDateTime.toLocalDate()) ||
@@ -131,7 +112,6 @@ public class Implementation1 extends SpecifikacijaRasporeda {
         }
         return null;
     }
-
 
     @Override
     public boolean exportData(String s) {
@@ -355,43 +335,5 @@ public class Implementation1 extends SpecifikacijaRasporeda {
     public boolean provaraZauzetosti(String kriterijum) {
         return false;
     }
-
-
-//    @Override
-//    public boolean loadData(String path, String configPath) {
-//        try {
-//            loadApache(path, configPath);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return true;
-//    }
-//    @Override
-//    public void addRoom(String podaci) {
-//        List<String> podaciList;
-//        podaciList = Arrays.asList(podaci.split(" ", 2));
-//        String naziv = podaciList.get(0);
-//        Map<String, String> equipmentMapa = new HashMap<>();
-//
-//        for (String equipment : podaciList) {
-//            if (!equipment.contains(naziv))
-//                equipmentMapa.put(StringUtils.substringBefore(equipment, ":"), StringUtils.substringAfter(equipment, ":"));
-//        }
-//        dodajSobu(naziv, equipmentMapa);
-//    }
-
-//    private void dodajSobu(String naziv, Map<String, String> equipment) {
-//        for (Room room : getSveSobe()) {
-//            if (room.getNaziv().equals(naziv)) {
-//                System.out.println("Soba pod tim imeno vec postoji. ");
-//                return;
-//            }
-//        }
-//        Room newRoom = new Room();
-//        newRoom.setNaziv(naziv);
-//        newRoom.setEquipment(equipment);
-//        getSveSobe().add(newRoom);
-//        System.out.println(getSveSobe());
-//    }
 }
 

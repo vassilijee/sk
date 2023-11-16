@@ -144,12 +144,13 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     public boolean provaraZauzetosti(String kriterijum) {
         return false;
     }
+
     /**
      * proveraZauzetostiUcionice sluzi da proverimo da li je zadata ucionica zauzeta odredjenog datuma u odredjenom terminu.
      *
      * @param naziv Naziv trazene ucinice
      * @param start Datum i vreme pocetka zeljenog termina
-     * @param end Datum i vreme zavrsetka zeljenog termina
+     * @param end   Datum i vreme zavrsetka zeljenog termina
      * @return true ako je zauzeta, false ako je slobodna
      */
     @Override

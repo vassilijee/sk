@@ -12,6 +12,7 @@ public interface Specification {
     void addRoom(String naziv, Map<String, String> equipment);
 
     void addTermin(String podaci);
+
     void addTermin(String start, String end, String ucionica, Map<String, String> additional);
 
     void deleteTermin(String start, String end, String ucionica);
@@ -20,10 +21,13 @@ public interface Specification {
 
     //pretrazivanje rasporeda
     List<Termin> pretragaTermina(String kriterijum, boolean zauzetost);
+
     List<Termin> pretragaTermina(String start, String end, String roomName, Map<String, String> additional, String dayOfTheWeek);
-    List<Termin> pretragaTermina(String start, String end, String vremeod, String vremedo,String roomName, Map<String, String> additional, String dayOfTheWeek);
+
+    List<Termin> pretragaTermina(String start, String end, String vremeod, String vremedo, String roomName, Map<String, String> additional, String dayOfTheWeek);
 
     boolean provaraZauzetosti(String kriterijum);
+
     boolean provaraZauzetostiUcionice(String naziv, String start, String end);
 
     //ucitavanje i snimanje rasporeda
