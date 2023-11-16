@@ -25,6 +25,7 @@ import java.util.Scanner;
 @Setter
 public abstract class SpecifikacijaRasporeda implements Specification {
     // KONSTRUKTOR ?
+    protected String implementationName;
     private List<Termin> raspored = new ArrayList<>();
     private LocalTime radnoVremeOd;
     private LocalTime radnoVremeDo;
@@ -33,6 +34,9 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     private LocalDate vaziDo;
     private List<LocalDate> neradniDani = new ArrayList<>();
     private DateTimeFormatter formatDatuma;
+
+    public SpecifikacijaRasporeda() {
+    }
 
     public List<Termin> getRasporedList() {
         if (raspored == null) raspored = new ArrayList<>();
@@ -139,6 +143,18 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     @Override
     public boolean provaraZauzetosti(String kriterijum) {
         return false;
+    }
+    /**
+     * proveraZauzetostiUcionice sluzi da proverimo da li je zadata ucionica zauzeta odredjenog datuma u odredjenom terminu.
+     *
+     * @param naziv Naziv trazene ucinice
+     * @param start Datum i vreme pocetka zeljenog termina
+     * @param end Datum i vreme zavrsetka zeljenog termina
+     * @return true ako je zauzeta, false ako je slobodna
+     */
+    @Override
+    public boolean provaraZauzetostiUcionice(String naziv, String start, String end) {
+        return true;
     }
 
     /**
