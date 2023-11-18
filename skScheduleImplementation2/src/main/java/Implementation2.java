@@ -4,6 +4,11 @@ import Termin.Room;
 import Termin.Termin;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -12,9 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Implementation2 extends SpecifikacijaRasporeda {
     static {
@@ -29,10 +32,9 @@ public class Implementation2 extends SpecifikacijaRasporeda {
     public void addTermin(String start, String end, String ucionica, Map<String, String> additional) {
         Termin termin = new Termin(LocalDateTime.parse(start, getFormatDatuma()),
                 LocalDateTime.parse(end, getFormatDatuma()), nadiSobuPoImenu(ucionica), additional);
-        boolean flag = true;
-        if(termin.getStart().getHour() < getRadnoVremeOd().getHour() || termin.getEnd().getHour() > getRadnoVremeDo().getHour())
-            flag = false;
-        else{
+        boolean flag = termin.getStart().getHour() >= getRadnoVremeOd().getHour() && termin.getEnd().getHour() <= getRadnoVremeDo().getHour() && getSveSobe().contains(termin.getRoom())
+                && !getNeradniDani().contains(termin.getStart().toLocalDate()) && !getNeradniDani().contains(termin.getEnd().toLocalDate());
+        /*else{
             for (Termin t:
                     getRaspored()) {
                 if( ((termin.getStart().isBefore(t.getEnd()) && !termin.getEnd().isBefore(t.getStart())) || (termin.getEnd().isAfter(t.getStart()) && !termin.getStart().isAfter(t.getEnd())))
@@ -47,10 +49,86 @@ public class Implementation2 extends SpecifikacijaRasporeda {
                         flag = false;
                 }
             }
-        }
-        if(flag){
+        }*/
+        if(flag && provera(termin, null)){
             getRaspored().add(termin);
         }
+    }
+
+    public boolean provera(Termin termin, Termin termin2){
+        for (Termin t:
+                getRaspored()) {
+            if(termin2 != null && termin2.equals(t))
+                continue;
+            if( ((termin.getStart().isBefore(t.getEnd()) && !termin.getEnd().isBefore(t.getStart())) || (termin.getEnd().isAfter(t.getStart()) && !termin.getStart().isAfter(t.getEnd())))
+                    && termin.getAdditional().get("Dan").equalsIgnoreCase(t.getAdditional().get("Dan"))
+                    && termin.getRoom().equals(t.getRoom()) ){
+                if(t.getStart().getHour() == termin.getStart().getHour() && t.getStart().getMinute() == termin.getStart().getMinute()
+                        && t.getEnd().getHour() == termin.getEnd().getHour() && t.getEnd().getMinute() == termin.getEnd().getMinute())
+                    return false;
+                if(t.getEnd().getHour() >= termin.getStart().getHour() && t.getEnd().getMinute() >= termin.getStart().getMinute())
+                    return false;
+                if(t.getStart().getHour() <= termin.getEnd().getHour() && t.getStart().getMinute() <= termin.getEnd().getMinute())
+                    return false;
+            }
+        }
+        return  true;
+    }
+
+    @Override
+    public void moveTermin(String podaci) {
+        String terminZaBrisanje = StringUtils.substringBefore(podaci, "|");
+        String oldstart;
+        String oldend;
+        String oldroom;
+        String olddan;
+
+        List<String> podaciListZaBrisanje;
+        podaciListZaBrisanje = Arrays.asList(terminZaBrisanje.split(";", 5));
+        oldstart = StringUtils.substringBefore(podaciListZaBrisanje.get(0), " -");
+        oldend = StringUtils.substringAfter(podaciListZaBrisanje.get(0), "- ");
+        oldroom = podaciListZaBrisanje.get(1).trim();
+        olddan = podaciListZaBrisanje.get(2).trim();
+
+        String terminZeljeniNovi = StringUtils.substringAfter(podaci, "|");
+        String newstart;
+        String newend;
+        String newroom;
+        String newdan;
+
+        List<String> podaciListZaNovi;
+        podaciListZaNovi = Arrays.asList(terminZeljeniNovi.split(";", 4));
+        newstart = StringUtils.substringBefore(podaciListZaNovi.get(0), " -");
+        newend = StringUtils.substringAfter(podaciListZaNovi.get(0), "- ");
+        newroom = podaciListZaNovi.get(1).trim();
+        newdan = podaciListZaNovi.get(2).trim();
+        if(move(oldstart, oldend, oldroom, olddan, newstart, newend, newroom, newdan))
+            System.out.println("Uspesno");
+        else
+            System.out.println("Neuspesno");
+
+    }
+
+    public boolean move(String oldstart, String oldend, String oldroom, String olddan, String newstart, String newend, String newroom, String newdan){
+        Termin tmpTerminNovi = new Termin();
+        Room tmpRoomNovi = nadiSobuPoImenu(newroom);
+        tmpTerminNovi.setStart(LocalDateTime.parse(newstart, DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")));
+        tmpTerminNovi.setEnd(LocalDateTime.parse(newend, DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")));
+        tmpTerminNovi.setRoom(tmpRoomNovi);
+        tmpTerminNovi.getAdditional().put("Dan", newdan);
+
+        Termin tmpTerminStari = nadjiTermin(oldstart,oldend,oldroom);
+        if(!provera(tmpTerminNovi,tmpTerminStari))
+            return false;
+        for (Map.Entry<String, String> entry:
+             tmpTerminStari.getAdditional().entrySet()) {
+            if(!entry.getKey().equals("Dan"))
+                tmpTerminNovi.getAdditional().put(entry.getKey(), entry.getValue());
+        }
+        deleteTermin(oldstart,oldend,oldroom);
+        //addTermin(newstart,newend,newroom,tmpTerminNovi.getAdditional());
+        getRaspored().add(tmpTerminNovi);
+        return true;
     }
 
     @Override
@@ -67,6 +145,8 @@ public class Implementation2 extends SpecifikacijaRasporeda {
         if(vremedo!=null)
             kraj = LocalTime.parse(vremedo, DateTimeFormatter.ofPattern("HH:mm"));
         Room room = nadiSobuPoImenu(roomName);
+        if(getNeradniDani().contains(startd) || getNeradniDani().contains(endd))
+            return termini;
         for (Termin t:
                 getRaspored()) {
             if( ((start==null && end == null) || ( (startd!=null) && t.getStart().isBefore(startd.atTime(21,0)) && t.getEnd().isAfter(startd.atTime(9,0)) && t.getAdditional().get("Dan").equalsIgnoreCase(nadjiDan(startd.getDayOfWeek().toString()))))
@@ -122,19 +202,27 @@ public class Implementation2 extends SpecifikacijaRasporeda {
 
     @Override
     public boolean exportData(String s) {
-        if (s.endsWith(".txt")) {
-            File txtFile = new File(s);
-            FileWriter fileWriter = null;
+        if (s.endsWith(".pdf")) {
             try {
-                fileWriter = new FileWriter(txtFile);
+                PDDocument document = new PDDocument();
+                PDPage page = new PDPage();
+                document.addPage(page);
+                PDPageContentStream contentStream = new PDPageContentStream(document, page);
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA, 12);
+                contentStream.setLeading(14.5f);
+                contentStream.newLineAtOffset(50, 750); // Set the position
                 for (Termin termin : getRaspored()) {
-                    StringBuilder line = new StringBuilder();
-                    line.append(termin);
-                    fileWriter.write(line.toString());
+                    contentStream.showText(pdf(termin));
+                    contentStream.newLine();
                 }
-                fileWriter.close();
+                contentStream.endText();
+
+                contentStream.close();
+                document.save(s);
+                document.close();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         } else if (s.endsWith(".csv")) {
             FileWriter fileWriter = null;
@@ -142,13 +230,13 @@ public class Implementation2 extends SpecifikacijaRasporeda {
                 fileWriter = new FileWriter(s);
                 CSVPrinter csvPrinter = new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
                 List<String> heder = new ArrayList<>();
-                heder.add("Dan");
+                /*heder.add("Dan");
                 heder.add("Vreme");
                 heder.add("Od datuma");
                 heder.add("Do datuma");
                 heder.add("Prosotrija");
                 heder.add("Prodesor");
-                heder.add("Predmet");
+                heder.add("Predmet");*/
                 csvPrinter.printRecord(heder);
                 for (Termin termin : getRaspored()) {
                     csvPrinter.printRecord(
@@ -160,39 +248,28 @@ public class Implementation2 extends SpecifikacijaRasporeda {
                             termin.getRoom().getNaziv(),
                             termin.getAdditional().get("Profesor"),
                             termin.getAdditional().get("Predmet")
+                            //termin.getRoom().getEquipment().get("racunar")
                     );
-//                    for (Map.Entry<String, String> oneAdditional : termin.getAdditional().entrySet()) {
-//                        csvPrinter.print(oneAdditional.getValue());
-//                    }
+
                 }
                 csvPrinter.close();
                 fileWriter.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        } else if (s.endsWith(".json")) {
-           /* try {
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                ObjectMapper mapper = new ObjectMapper();
-                FileWriter fileWriter = new FileWriter(s);
-
-                mapper.registerModule(new JavaTimeModule());
-                mapper.writeValue(out, getRaspored());
-
-
-                byte[] data = out.toByteArray();
-                fileWriter.write(new String(data));
-                fileWriter.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-
-            //System.out.println(new String(data));*/
         }
        return  true;
     }
 
+    public  String pdf(Termin termin){
+        return  termin.getAdditional().get("Dan") + ", " +
+                termin.getStart().format(DateTimeFormatter.ofPattern("HH:mm")) + "-" +
+                termin.getEnd().format(DateTimeFormatter.ofPattern("HH:mm")) + ", " +
+                termin.getStart().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")) + ", " +
+                termin.getEnd().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")) + ", " +
+                termin.getRoom().getNaziv() + ", " +
+                ispisiAdditional(termin.getAdditional(), false);
+    }
 
     public String terminString(Termin termin){
         return "Termin " +
@@ -201,9 +278,8 @@ public class Implementation2 extends SpecifikacijaRasporeda {
                 termin.getEnd().format(DateTimeFormatter.ofPattern("HH:mm")) +
                 ", Od=" + termin.getStart().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")) +
                 ", Do=" + termin.getEnd().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")) +
-                ", Room=" + ispisiRoom(termin.getRoom()) +
-                ispisiAdditional(termin.getAdditional())+
-                '\n';
+                ", Room=" + ispisiRoom(termin.getRoom()) + " " +
+                ispisiAdditional(termin.getAdditional(), true);
 
     }
     @Override
@@ -211,21 +287,25 @@ public class Implementation2 extends SpecifikacijaRasporeda {
         StringBuilder sb = new StringBuilder();
         for (Termin t:
                 raspored) {
-            sb.append(terminString(t));
+            sb.append(terminString(t) + "\n");
+
         }
         return sb.toString();
     }
 
 
-    public String ispisiAdditional(Map<String,String> additional){
+    public String ispisiAdditional(Map<String,String> additional, boolean uslov){
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry:
                 additional.entrySet()) {
             if(entry.getKey().equalsIgnoreCase("dan"))
                 continue;
-            sb.append(entry.getKey() + "=" + entry.getValue() + ", ");
+            if(uslov)
+                sb.append(entry.getKey() + "=" + entry.getValue() + ", ");
+            else
+                sb.append(entry.getValue() + ", ");
         }
-        return sb.toString();
+        return sb.substring(0,sb.length()-2);
     }
     public String ispisiRoom(Room room){
         StringBuilder sb = new StringBuilder();
@@ -256,6 +336,7 @@ public class Implementation2 extends SpecifikacijaRasporeda {
         }
 
     }
+
 
     public boolean ispitajAdditional(Termin t, Map<String, String> k){
         boolean flag = false;
