@@ -11,11 +11,11 @@ public class Main {
         System.out.println("\nOPIS PROSTORA (METADATA): \n" + implementacija);
 
         System.out.println("\nUcitan raspored: \n" + implementacija.ispisRasporeda(implementacija.getRaspored()));
-       /* Map<String, String> a = new HashMap<>();
+        Map<String, String> a = new HashMap<>();
         a.put("Dan", "petak");
         a.put("Predmet", "OOP");
         implementacija.addTermin("12/11/2023 12:00", "01/13/2024 14:00", "RAF3", a);
-        System.out.println("\nRaspored: \n" + implementacija.ispisRasporeda(implementacija.getRaspored()));
+        System.out.println("\nRaspored: \n" + implementacija.ispisRasporeda(implementacija.getRaspored()));/*
         Map<String, String> b = new HashMap<>();
         b.put("racunar", "NE");
         b.put("mikrofon", "DA");
@@ -27,10 +27,10 @@ public class Main {
         c.put("Profesor", "Bojana Dimic Surla");
         c.put("Predmet", "UUP");
         System.out.println("\nPretraga: \n" + implementacija.ispisRasporeda(implementacija.pretragaTermina(null, null, null, null,"RAF4",null,null)));
-        System.out.println(implementacija.provaraZauzetostiUcionice("RAF4", "10/05/2023 16:00", "10/04/2023 18:45"));
+        System.out.println(implementacija.provaraZauzetostiUcionice("RAF3", "10/20/2023 14:20", "10/20/2023 19:10"));
         implementacija.move("11/12/2023 11:00", "01/12/2024 13:00", "RAF4", "petak", "11/12/2023 13:00", "01/12/2024 15:00", "RAF2", "sreda");
-        System.out.println("\nPretraga: \n" + implementacija.ispisRasporeda(implementacija.getRaspored()));*/
+        System.out.println("\nPretraga: \n" + implementacija.ispisRasporeda(implementacija.getRaspored()));
         implementacija.exportData("termini3.csv");
-        implementacija.exportData("termini4.pdf");
+        implementacija.exportData("termini4.pdf");*/
     }
 }

@@ -63,12 +63,19 @@ public class Implementation2 extends SpecifikacijaRasporeda {
             if( ((termin.getStart().isBefore(t.getEnd()) && !termin.getEnd().isBefore(t.getStart())) || (termin.getEnd().isAfter(t.getStart()) && !termin.getStart().isAfter(t.getEnd())))
                     && termin.getAdditional().get("Dan").equalsIgnoreCase(t.getAdditional().get("Dan"))
                     && termin.getRoom().equals(t.getRoom()) ){
-                if(t.getStart().getHour() == termin.getStart().getHour() && t.getStart().getMinute() == termin.getStart().getMinute()
-                        && t.getEnd().getHour() == termin.getEnd().getHour() && t.getEnd().getMinute() == termin.getEnd().getMinute())
+                if(t.getStart().getHour() ==  termin.getStart().getHour() && t.getEnd().getHour() == termin.getEnd().getHour() )
                     return false;
-                if(t.getEnd().getHour() >= termin.getStart().getHour() && t.getEnd().getMinute() >= termin.getStart().getMinute())
+                if(t.getStart().getHour() <  termin.getStart().getHour() && t.getEnd().getHour() > termin.getEnd().getHour())
                     return false;
-                if(t.getStart().getHour() <= termin.getEnd().getHour() && t.getStart().getMinute() <= termin.getEnd().getMinute())
+                if(t.getEnd().getHour() >  termin.getStart().getHour() && t.getEnd().getHour() < termin.getEnd().getHour() )
+                    return false;
+                if(t.getStart().getHour() < termin.getEnd().getHour() && t.getStart().getHour() >  termin.getStart().getHour())
+                    return false;
+                if(t.getStart().getHour() >  termin.getStart().getHour() && t.getEnd().getHour() < termin.getEnd().getHour())
+                    return false;
+                if(t.getStart().getHour() == termin.getEnd().getHour() && t.getStart().getMinute() < termin.getEnd().getMinute())
+                    return false;
+                if(t.getEnd().getHour() ==  termin.getStart().getHour() && t.getEnd().getMinute() < termin.getEnd().getMinute())
                     return false;
             }
         }
@@ -182,17 +189,19 @@ public class Implementation2 extends SpecifikacijaRasporeda {
                 getRaspored()) {
             if(t.getRoom().getNaziv().equalsIgnoreCase(naziv)) {
                if(t.getStart().isBefore(startd) && t.getEnd().isAfter(startd) && t.getAdditional().get("Dan").equalsIgnoreCase(dan)){
-                   if(t.getStart().getHour() >= startd.getHour() && t.getStart().getMinute() >= startd.getMinute()
-                           && t.getEnd().getHour() >= endd.getHour() && t.getEnd().getMinute() >= endd.getMinute())
+                   if(t.getStart().getHour() == startd.getHour() && t.getEnd().getHour() == endd.getHour() )
                        return true;
-                   if(t.getEnd().getHour() > startd.getHour() && t.getEnd().getMinute() > startd.getMinute()
-                           && t.getEnd().getHour() < endd.getHour() && t.getEnd().getMinute() < endd.getMinute())
+                   if(t.getStart().getHour() < startd.getHour() && t.getEnd().getHour() > endd.getHour())
                        return true;
-                   if(t.getStart().getHour()<endd.getHour() && t.getStart().getMinute() < endd.getMinute()
-                           && t.getStart().getHour() > startd.getHour() && t.getStart().getMinute() > startd.getMinute())
+                   if(t.getEnd().getHour() > startd.getHour() && t.getEnd().getHour() < endd.getHour() )
                        return true;
-                   if(t.getStart().getHour() > startd.getHour() && t.getStart().getMinute() > startd.getMinute()
-                           && t.getEnd().getHour() < endd.getHour() && t.getEnd().getMinute() < endd.getMinute())
+                   if(t.getStart().getHour() < endd.getHour() && t.getStart().getHour() > startd.getHour())
+                       return true;
+                   if(t.getStart().getHour() > startd.getHour() && t.getEnd().getHour() < endd.getHour())
+                       return true;
+                   if(t.getStart().getHour() == endd.getHour() && t.getStart().getMinute() < endd.getMinute())
+                       return true;
+                   if(t.getEnd().getHour() == startd.getHour() && t.getEnd().getMinute() < endd.getMinute())
                        return true;
                }
             }
