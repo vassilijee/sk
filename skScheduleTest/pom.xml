@@ -73,6 +73,19 @@
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>impl1Resources</directory>
+                <includes>
+                    <include>**/*.txt</include>
+                    <include>**/*.csv</include>
+                    <include>**/*.json</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>impl2Resources</directory>
+            </resource>
+        </resources>
     </build>
 
 </project>

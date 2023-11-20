@@ -68,7 +68,7 @@ public class Main {
 //                    option = "C:\\Users\\Lana\\Desktop\\sk_git\\sk\\skScheduleTest\\impl2Resources\\meta.txt";
 
 //                    za Mac apsolutna putanja
-//                    option = "impl1Resources/meta.txt";
+                    option = "impl1Resources/meta.txt";
 //                    option = "impl2Resources/meta.txt";
 
                     raspored.initRaspored(option);
@@ -86,7 +86,7 @@ public class Main {
 //                    option = "C:\\Users\\Lana\\Desktop\\sk_git\\sk\\skScheduleTest\\impl2Resources\\termini.csv";
 
 //                    za Mac apsolutna putanja
-//                    option = "impl1Resources/terminii.csv";
+                    option = "impl1Resources/terminii.csv";
 //                    option = "impl2Resources/termini.csv";
 
                     String configPath = "";
@@ -99,7 +99,7 @@ public class Main {
 //                    configPath = "C:\\Users\\Lana\\Desktop\\sk_git\\sk\\skScheduleTest\\impl2Resources\\termini.txt";
 
 //                    za Mac apsolutna putanja
-//                    configPath = "impl1Resources/config.txt";
+                    configPath = "impl1Resources/config.txt";
 //                    configPath = "config.txt";
 
                     raspored.loadData(option, configPath);
@@ -156,10 +156,10 @@ public class Main {
 //                    }
 
 //                    predefinisan unos - impl1
-//                    start = "04.04.2002 10:00";
-//                    end = "04.04.2002 11:00";
-//                    roomName = "RAF1";
-//                    additional.put("Profesor", "asdasd");
+                    start = "04.04.2002 10:00";
+                    end = "04.04.2002 11:00";
+                    roomName = "RAF1";
+                    additional.put("Profesor", "asdasd");
 
 //                    predefinisan unos - impl2
 //                    start = "04/04/2002 10:00";
@@ -178,7 +178,7 @@ public class Main {
 
 //                    predefinisane opcije
 //                    option = "export.csv";
-//                    option = "export.json";
+                    option = "export.json";
 //                    option = "export.txt";
 //                    option = "export.pdf";
 
@@ -198,9 +198,9 @@ public class Main {
 //                    roomName = scanner.nextLine();
 
 //                    impl1 primer - brise prvi termin iz loada - RAF1,29.10.2023 09:15,29.10.2023 11:15,UUP,Mladen Jovanovic,DA
-//                    start = "29.10.2023 09:15";
-//                    end = "29.10.2023 11:15";
-//                    roomName = "RAF1";
+                    start = "29.10.2023 09:15";
+                    end = "29.10.2023 11:15";
+                    roomName = "RAF1";
 
 //                    impl2 primer
 //                    start = "";
@@ -277,10 +277,10 @@ public class Main {
 
 
 //                    primer za impl1, vraca samo jedan termin - Termin{start=2023-10-30T15:15, end=2023-10-30T17:15, room=Room{naziv='RAF1', equipment={mikrofon=DA, racunar=DA}}, additional={Profesor=Nikola Redzic, Predmet=SK}}
-//                    Map<String, String> additionall = new HashMap<>();
-//                    additionall.put("Profesor", "Nikola Redzic");
-//                    additionall.put("Predmet", "SK");
-//                    System.out.println("Pronadjeni termini: \n" + raspored.pretragaTermina("29.10.2023", null, "15:15", null, null, additionall, null));
+                    Map<String, String> additionall = new HashMap<>();
+                    additionall.put("Profesor", "Nikola Redzic");
+                    additionall.put("Predmet", "SK");
+                    System.out.println("Pronadjeni termini: \n" + raspored.pretragaTermina("29.10.2023", null, "15:15", null, null, additionall, null));
 
 //                    primer za impl2, vraca ...
 //                    Map<String, String> additionall = new HashMap<>();
@@ -303,9 +303,9 @@ public class Main {
 //                    roomName = scanner.nextLine();
 
 //                     impl1 primer
-//                    roomName = "RAF2";
-//                    start = "30.10.2023 15:45";
-//                    end = "30.10.2023 16:00";
+                    roomName = "RAF2";
+                    start = "30.10.2023 15:45";
+                    end = "30.10.2023 16:00";
 
 //                    impl2 primer
 //                    roomName = "RAF2";
