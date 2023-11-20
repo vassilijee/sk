@@ -314,7 +314,10 @@ public class Implementation2 extends SpecifikacijaRasporeda {
             else
                 sb.append(entry.getValue() + ", ");
         }
-        return sb.substring(0,sb.length()-2);
+        if(sb.length() == 0)
+            return "";
+        else
+            return sb.substring(0,sb.length()-2);
     }
     public String ispisiRoom(Room room){
         StringBuilder sb = new StringBuilder();

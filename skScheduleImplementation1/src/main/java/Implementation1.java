@@ -7,9 +7,15 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -23,15 +29,6 @@ public class Implementation1 extends SpecifikacijaRasporeda {
         super();
     }
 
-    @Override
-    public void initRaspored(String path) {
-        System.out.println("CITANJE METAPODATAKA" + '\n');
-        try {
-            readMeta(path);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     public void addTermin(String start, String end, String roomNaziv, Map<String, String> additional) {
@@ -169,8 +166,51 @@ public class Implementation1 extends SpecifikacijaRasporeda {
 
 
             //System.out.println(new String(data));
+        } else  if (s.endsWith(".pdf")) {
+            try {
+                PDDocument document = new PDDocument();
+                PDPage page = new PDPage();
+                document.addPage(page);
+                PDPageContentStream contentStream = new PDPageContentStream(document, page);
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA, 12);
+                contentStream.setLeading(14.5f);
+                contentStream.newLineAtOffset(50, 750); // Set the position
+                for (Termin termin : getRaspored()) {
+                    contentStream.showText(pdf(termin));
+                    contentStream.newLine();
+                }
+                contentStream.endText();
+
+                contentStream.close();
+                document.save(s);
+                document.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return true;
+    }
+
+    public  String pdf(Termin termin){
+        return termin.getStart().format(DateTimeFormatter.ofPattern("HH:mm")) + "-" +
+                termin.getEnd().format(DateTimeFormatter.ofPattern("HH:mm")) + ", " +
+                termin.getStart().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")) + ", " +
+                termin.getEnd().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")) + ", " +
+                termin.getRoom().getNaziv() + ", " +
+                ispisiAdditional(termin.getAdditional());
+    }
+
+    public String ispisiAdditional(Map<String,String> additional){
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> entry:
+                additional.entrySet()) {
+                sb.append(entry.getValue() + ", ");
+        }
+        if(sb.length() == 0)
+            return "";
+        else
+            return sb.substring(0,sb.length()-2);
     }
 
     @Override
@@ -208,8 +248,8 @@ public class Implementation1 extends SpecifikacijaRasporeda {
                                   String roomNazivOdZeljeniNovi) {
         Termin tmpTerminNovi = new Termin();
         Room tmpRoomNovi = new Room(roomNazivOdZeljeniNovi);
-        tmpTerminNovi.setStart(LocalDateTime.parse(startOdZeljeniNovi, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
-        tmpTerminNovi.setEnd(LocalDateTime.parse(endOdZeljeniNovi, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")));
+        tmpTerminNovi.setStart(LocalDateTime.parse(startOdZeljeniNovi, getFormatDatuma()));
+        tmpTerminNovi.setEnd(LocalDateTime.parse(endOdZeljeniNovi, getFormatDatuma()));
         tmpTerminNovi.setRoom(tmpRoomNovi);
 
         if (proveraPreklapanjaTermina(tmpTerminNovi) != null) {
@@ -248,30 +288,49 @@ public class Implementation1 extends SpecifikacijaRasporeda {
     }
 
     @Override
-    public List<Termin> pretragaTermina(String kriterijum, boolean zauzetost) {
-        return null;
-    }
+    public List<Termin> pretragaTermina(String startDate, String endDate, String startTime, String endTime, String roomName, Map<String, String> additional, String dayOfTheWeek) {
+        DateTimeFormatter vremeFormat = DateTimeFormatter.ofPattern(StringUtils.substringAfter(getFormatDatumaAsString(), " "));
+        DateTimeFormatter datumFormat = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString(), " "));
 
-    @Override
-    public List<Termin> pretragaTermina(String start, String end, String roomName, Map<String, String> additional, String dayOfTheWeek) {
         List<Termin> presekOdgovarajucihTermina = new ArrayList<>();
-        List<Termin> terminiOdgovarajuStart = new ArrayList<>();
-        List<Termin> terminiOdgovarajuEnd = new ArrayList<>();
+        List<Termin> terminiOdgovarajuStartDate = new ArrayList<>();
+        List<Termin> terminiOdgovarajuEndDate = new ArrayList<>();
+        List<Termin> terminiOdgovarajuStartTime = new ArrayList<>();
+        List<Termin> terminiOdgovarajuEndTime = new ArrayList<>();
         List<Termin> terminiOdgovarajuRoomName = new ArrayList<>();
         List<Termin> terminiOdgovarajuAdditional = new ArrayList<>();
         List<Termin> terminiOdgovarajuDayOfTheWeek = new ArrayList<>();
-
+        LocalDate startD = null, endD=null;
+        LocalTime startT = null, endT=null;
+        if(startDate != null)
+                startD = LocalDate.parse(startDate, datumFormat);
+        if(endDate != null)
+            endD = LocalDate.parse(endDate, datumFormat);
+        if(startTime != null)
+            startT = LocalTime.parse(startTime, vremeFormat);
+        if(endTime != null)
+            endT = LocalTime.parse(endTime, vremeFormat);
         for (Termin termin :
                 getRaspored()) {
-            if (start != null &&
-                    !terminiOdgovarajuStart.contains(termin) &&
-                    termin.getStart().equals(LocalDateTime.parse(start, getFormatDatuma()))) {
-                terminiOdgovarajuStart.add(termin);
+            if (startDate != null &&
+                    !terminiOdgovarajuStartDate.contains(termin) &&
+                    termin.getStart().toLocalDate().equals(startD)) {
+                terminiOdgovarajuStartDate.add(termin);
             }
-            if (end != null &&
-                    !terminiOdgovarajuEnd.contains(termin) &&
-                    termin.getEnd().equals(LocalDateTime.parse(end, getFormatDatuma()))) {
-                terminiOdgovarajuEnd.add(termin);
+            if (endDate != null &&
+                    !terminiOdgovarajuEndDate.contains(termin) &&
+                    termin.getEnd().toLocalDate().equals(endD)) {
+                terminiOdgovarajuEndDate.add(termin);
+            }
+            if (startTime != null &&
+                    !terminiOdgovarajuStartTime.contains(termin) &&
+                    termin.getStart().toLocalTime().equals(startT)) {
+                terminiOdgovarajuStartTime.add(termin);
+            }
+            if (endTime != null &&
+                    !terminiOdgovarajuEndTime.contains(termin) &&
+                    termin.getEnd().toLocalTime().equals(endT)) {
+                terminiOdgovarajuEndTime.add(termin);
             }
             if (roomName != null &&
                     !terminiOdgovarajuRoomName.contains(termin) &&
@@ -299,15 +358,17 @@ public class Implementation1 extends SpecifikacijaRasporeda {
             // ne radi,  moram da idem sad, ako budes radila da znas
             if (dayOfTheWeek != null &&
                     !terminiOdgovarajuDayOfTheWeek.contains(termin) &&
-                    termin.getRoom().getNaziv().equals(roomName)) {
+                    nadjiDan(termin.getStart().getDayOfWeek().toString()).equals(dayOfTheWeek)) {
                 terminiOdgovarajuDayOfTheWeek.add(termin);
             }
         }
 
 
         List<List<Termin>> listsToIntersect = Arrays.asList(
-                terminiOdgovarajuStart,
-                terminiOdgovarajuEnd,
+                terminiOdgovarajuStartDate,
+                terminiOdgovarajuEndDate,
+                terminiOdgovarajuStartTime,
+                terminiOdgovarajuEndTime,
                 terminiOdgovarajuRoomName,
                 terminiOdgovarajuAdditional,
                 terminiOdgovarajuDayOfTheWeek
@@ -330,9 +391,42 @@ public class Implementation1 extends SpecifikacijaRasporeda {
         return presekOdgovarajucihTermina;
     }
 
+    public String nadjiDan(String dan){
+        if(dan.equalsIgnoreCase("monday")){
+            return "ponedeljak";
+        } else if(dan.equalsIgnoreCase("tuesday")){
+            return "utorak";
+        } else if(dan.equalsIgnoreCase("wednesday")){
+            return "sreda";
+        } else if(dan.equalsIgnoreCase("thursday")){
+            return "cetvrtak";
+        } else if(dan.equalsIgnoreCase("friday")){
+            return "petak";
+        } else if(dan.equalsIgnoreCase("saturday")){
+            return "subota";
+        } else {
+            return "nedelja";
+        }
+
+    }
 
     @Override
-    public boolean provaraZauzetosti(String kriterijum) {
+    public boolean provaraZauzetostiUcionice(String naziv, String start, String end) {
+        LocalDateTime startd = LocalDateTime.parse(start, getFormatDatuma());
+        LocalDateTime endd = LocalDateTime.parse(end, getFormatDatuma());
+        for (Termin t:
+                getRaspored()) {
+            if(t.getRoom().getNaziv().equalsIgnoreCase(naziv) && t.getStart().equals(startd) && t.getEnd().equals(endd))
+                return true;
+            if(t.getRoom().getNaziv().equalsIgnoreCase(naziv) && t.getEnd().isAfter(startd) && t.getEnd().isBefore(endd))
+                return true;
+            if(t.getRoom().getNaziv().equalsIgnoreCase(naziv) && t.getStart().isBefore(endd) && t.getStart().isAfter(startd))
+                return true;
+            if(t.getRoom().getNaziv().equalsIgnoreCase(naziv) && t.getStart().isAfter(startd) && t.getEnd().isBefore(endd))
+                return true;
+            if(t.getRoom().getNaziv().equalsIgnoreCase(naziv) && t.getStart().isBefore(startd) && t.getEnd().isAfter(endd))
+                return true;
+        }
         return false;
     }
 }

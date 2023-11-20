@@ -46,9 +46,10 @@ public class main {
 //        System.out.println("Raspored termina nakon izmene: \n" + raspored.getRaspored());
 //
 //        //pretragaTermina()
-//        Map<String, String> additional = new HashMap<>();
-//        additional.put("Profesor", "Nikola Redzic");
-//        additional.put("Predmet", "SK");
-//        System.out.println("Pronadjeni termini: \n" + raspored.pretragaTermina("29.10.2023 15:15", null, null, additional, null));
+//            Map<String, String> additionall = new HashMap<>();
+//            additionall.put("Profesor", "Nikola Redzic");
+//            additionall.put("Predmet", "SK");
+//            System.out.println("Pronadjeni termini: \n" + raspored.pretragaTermina("29.10.2023", null, "15:15", null,null, null, null));
+        System.out.println(raspored.provaraZauzetostiUcionice("RAF2", "30.10.2023 15:45", "31.10.2023 16:00"));
     }
 }

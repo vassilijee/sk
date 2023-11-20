@@ -35,6 +35,8 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     private List<LocalDate> neradniDani = new ArrayList<>();
     private DateTimeFormatter formatDatuma;
 
+    private String formatDatumaAsString;
+
     public SpecifikacijaRasporeda() {
     }
 
@@ -45,9 +47,9 @@ public abstract class SpecifikacijaRasporeda implements Specification {
 
 
     /**
-     * initRaspored sluzi za inicijalizaciju rasporeda.
-     * Dodacemo path ka metapodacima, gde cemo odrediti vremenska ogranicenja naseg rasporeda.
-     *
+     * initRaspored sluzi za inicijalizaciju rasporeda i popunjavanje osnovnih podataka.
+     * Dodacemo path ka metapodacima, gde cemo odrediti vremenska ogranicenja naseg rasporeda, koje prostorije postoje, neradni dani itd.
+     * Ova metoda se mora pozvati pre bilo kakve manipulacije sa rasporedom.
      * @param path Path ka metapodaci fajlu
      */
     @Override
@@ -60,10 +62,11 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     }
 
     /**
-     * addRoom sluzi da se dodaju prostori u metapodatke
+     * addRoom sluzi da se dodaju prostori u metapodatke i u samu listu svih prostorija
      *
      * @param naziv     Naziv prostorije.
-     * @param equipment Neki dodatci prostorije
+     * @param equipment Mapa dodataka vezano za prosorije gde je kljuc opisuje naziv tog dodatka a vrednost je vrednost tog dodatka
+     * @return Ukoliko se vec postoji prostorija sa tim nazivom vraca -1 a ukoliko jeste 1
      */
     @Override
     public void addRoom(String naziv, Map<String, String> equipment) {
@@ -71,23 +74,15 @@ public abstract class SpecifikacijaRasporeda implements Specification {
         sveSobe.add(room);
     }
 
-    /**
-     * addTermin sluzi za dodavanje novog termina u raspored.
-     *
-     * @param podaci Podaci o temrinu koji se dodaje.
-     */
-    @Override
-    public void addTermin(String podaci) {
-
-    }
 
     /**
      * addTermin sluzi za dodavanje novog termina u raspored.
      *
-     * @param start      Podaci o pocetku termina koji se dodaje.
-     * @param end        Podaci o kraju termina koji se dodaje.
-     * @param ucionica   Podaci o ucionici termina koji se dodaje.
-     * @param additional Podaci o dodatcima termina koji se dodaje.
+     * @param start      Podaci o pocetku termina koji se dodaje u formatu zadatom u config fajlu.
+     * @param end        Podaci o kraju termina koji se dodaje u formatu zadatom u config fajli.
+     * @param ucionica   Naziv prostorije termina koji se dodaje.
+     * @param additional Mapa dodataka vezano za prosorije gde je kljuc opisuje naziv tog dodatka a vrednost je vrednost tog dodatka
+     * @return Ukoliko se termin nije dodao zbog nekog preklapanja ili nedozvoljenog datuma ili nepostojece ucuionice vraca -1 a ukolio se sve lepo dodalo vraca 1
      */
     @Override
     public void addTermin(String start, String end, String ucionica, Map<String, String> additional) {
@@ -97,11 +92,11 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     /**
      * deleteTermin sluzi za brisanje zadatog termina iz rasporeda
      *
-     * @param start    Podaci o pocetku termina koji ce se obrisati.
-     * @param end      Podaci o kraju termina koji ce se obrisati.
-     * @param ucionica Podaci o ucionici termina koji ce se obrisati.
+     * @param start    Podaci o pocetku termina koji ce se obrisati u formatu zadatom iz config fajla.
+     * @param end      Podaci o kraju termina koji ce se obrisati u formatu zadatom iz config fajla.
+     * @param ucionica Naziv prostorije termina koji ce se obrisati.
+     * @return Vraca -1 ukoliko nije obrisao a 1 ukoliko jeste
      */
-
     @Override
     public void deleteTermin(String start, String end, String ucionica) {
         raspored.remove(nadjiTermin(start, end, ucionica));
@@ -110,7 +105,8 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     /**
      * moveTermin sluzi za pomeranje termina.
      *
-     * @param podaci Podaci o terminima koje zelimo da zamenimo.
+     * @param podaci Podaci o terminima koje zelimo da promenimo u formatu 10/01/2023 13:15 - 12/01/2023 15:00; RAF3; petak(ukoliko je grupisajuci raspored uniste dan)|10/01/2023 11:15 - 12/01/2023 13:00; RAF6; sreda(ukoliko je grupisajuci raspored uniste dan).
+     * @return Vraca -1 ukoliko termin nije pomeren a 1 ukoliko jeste
      */
     @Override
     public void moveTermin(String podaci) {
@@ -120,29 +116,14 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     /**
      * pretragaTermina sluzi da pretrazimo raspored po zadatom kriterijumu za slobodne ili zauzete termine.
      *
-     * @param kriterijum kriterijum po kome zelimo da nadjemo termine
-     * @param zauzetost  Zauzetost(slobodno ili zauzeto)
+     *
+     *
      * @return lista termina koji ispunjavaju zadati kriterijum
      */
-    @Override
-    public List<Termin> pretragaTermina(String kriterijum, boolean zauzetost) {
-        return null;
-    }
 
     @Override
     public List<Termin> pretragaTermina(String start, String end, String vremeod, String vremedo, String roomName, Map<String, String> additional, String dayOfTheWeek) {
         return null;
-    }
-
-    /**
-     * proveraZauzetosti sluzi da proverimo da li zadati termin zauzet.
-     *
-     * @param kriterijum Podaci u terminu
-     * @return true ako je slobodan, false ako je zauzet
-     */
-    @Override
-    public boolean provaraZauzetosti(String kriterijum) {
-        return false;
     }
 
     /**
@@ -257,11 +238,6 @@ public abstract class SpecifikacijaRasporeda implements Specification {
             }
         }
         scanner.close();
-    }
-
-    @Override
-    public List<Termin> pretragaTermina(String start, String end, String roomName, Map<String, String> additional, String dayOfTheWeek) {
-        return null;
     }
 
     public Room nadiSobuPoImenu(String naziv) {
