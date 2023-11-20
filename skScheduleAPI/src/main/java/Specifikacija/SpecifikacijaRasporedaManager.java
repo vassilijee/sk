@@ -8,7 +8,7 @@ public class SpecifikacijaRasporedaManager {
     }
 
     public static SpecifikacijaRasporeda getExporter() {
-        specifikacijaRasporeda.getRasporedList();
+        specifikacijaRasporeda.getRaspored();
         return specifikacijaRasporeda;
     }
 }
