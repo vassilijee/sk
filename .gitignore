@@ -1,1 +1,11 @@
 /skScheduleAPI/target/
+/skScheduleAPI/.idea/
+
+/skScheduleTest/target/
+/skScheduleTest/.idea/
+
+/skScheduleImpl1/target/
+/skScheduleImpl1/.idea/
+
+/skScheduleImpl2/target/
+/skScheduleImpl2/.idea/
