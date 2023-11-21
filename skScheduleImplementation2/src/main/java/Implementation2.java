@@ -10,7 +10,6 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -23,7 +22,8 @@ public class Implementation2 extends SpecifikacijaRasporeda {
     static {
         SpecifikacijaRasporedaManager.registerExporter(new Implementation2());
     }
-
+    DateTimeFormatter datumFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
+    DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
     public Implementation2() {
         super();
     }
@@ -34,22 +34,6 @@ public class Implementation2 extends SpecifikacijaRasporeda {
                 LocalDateTime.parse(end, getFormatDatuma()), nadiSobuPoImenu(ucionica), additional);
         boolean flag = termin.getStart().getHour() >= getRadnoVremeOd().getHour() && termin.getEnd().getHour() <= getRadnoVremeDo().getHour() && getSveSobe().contains(termin.getRoom())
                 && !getNeradniDani().contains(termin.getStart().toLocalDate()) && !getNeradniDani().contains(termin.getEnd().toLocalDate());
-        /*else{
-            for (Termin t:
-                    getRaspored()) {
-                if( ((termin.getStart().isBefore(t.getEnd()) && !termin.getEnd().isBefore(t.getStart())) || (termin.getEnd().isAfter(t.getStart()) && !termin.getStart().isAfter(t.getEnd())))
-                        && termin.getAdditional().get("Dan").equalsIgnoreCase(t.getAdditional().get("Dan"))
-                        && termin.getRoom().equals(t.getRoom()) ){
-                    if(t.getStart().getHour() == termin.getStart().getHour() && t.getStart().getMinute() == termin.getStart().getMinute()
-                            && t.getEnd().getHour() == termin.getEnd().getHour() && t.getEnd().getMinute() == termin.getEnd().getMinute())
-                        flag = false;
-                    if(t.getEnd().getHour() >= termin.getStart().getHour() && t.getEnd().getMinute() >= termin.getStart().getMinute())
-                        flag = false;
-                    if(t.getStart().getHour() <= termin.getEnd().getHour() && t.getStart().getMinute() <= termin.getEnd().getMinute())
-                        flag = false;
-                }
-            }
-        }*/
         if(flag && provera(termin, null)){
             getRaspored().add(termin);
         }
@@ -104,7 +88,7 @@ public class Implementation2 extends SpecifikacijaRasporeda {
         String newdan;
 
         List<String> podaciListZaNovi;
-        podaciListZaNovi = Arrays.asList(terminZeljeniNovi.split(";", 4));
+        podaciListZaNovi = Arrays.asList(terminZeljeniNovi.split(";", 5));
         newstart = StringUtils.substringBefore(podaciListZaNovi.get(0), " -");
         newend = StringUtils.substringAfter(podaciListZaNovi.get(0), "- ");
         newroom = podaciListZaNovi.get(1).trim();
@@ -119,8 +103,8 @@ public class Implementation2 extends SpecifikacijaRasporeda {
     public boolean move(String oldstart, String oldend, String oldroom, String olddan, String newstart, String newend, String newroom, String newdan){
         Termin tmpTerminNovi = new Termin();
         Room tmpRoomNovi = nadiSobuPoImenu(newroom);
-        tmpTerminNovi.setStart(LocalDateTime.parse(newstart, DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")));
-        tmpTerminNovi.setEnd(LocalDateTime.parse(newend, DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm")));
+        tmpTerminNovi.setStart(LocalDateTime.parse(newstart, getFormatDatuma()));
+        tmpTerminNovi.setEnd(LocalDateTime.parse(newend, getFormatDatuma()));
         tmpTerminNovi.setRoom(tmpRoomNovi);
         tmpTerminNovi.getAdditional().put("Dan", newdan);
 
@@ -144,13 +128,13 @@ public class Implementation2 extends SpecifikacijaRasporeda {
         LocalDate startd=null, endd=null;
         LocalTime  pocetak=null, kraj=null;
         if(start!=null)
-            startd = LocalDate.parse(start,DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+            startd = LocalDate.parse(start,datumFormater);
         if(end!=null)
-            endd = LocalDate.parse(end,DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+            endd = LocalDate.parse(end,datumFormater);
         if(vremeod!=null)
-            pocetak = LocalTime.parse(vremeod, DateTimeFormatter.ofPattern("HH:mm"));
+            pocetak = LocalTime.parse(vremeod, vremeFormater);
         if(vremedo!=null)
-            kraj = LocalTime.parse(vremedo, DateTimeFormatter.ofPattern("HH:mm"));
+            kraj = LocalTime.parse(vremedo, vremeFormater);
         Room room = nadiSobuPoImenu(roomName);
         if(getNeradniDani().contains(startd) || getNeradniDani().contains(endd))
             return termini;
@@ -182,8 +166,8 @@ public class Implementation2 extends SpecifikacijaRasporeda {
 
     @Override
     public boolean provaraZauzetostiUcionice(String naziv, String start, String end) {
-        LocalDateTime startd = LocalDateTime.parse(start,DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm"));
-        LocalDateTime endd = LocalDateTime.parse(end,DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm"));
+        LocalDateTime startd = LocalDateTime.parse(start,getFormatDatuma());
+        LocalDateTime endd = LocalDateTime.parse(end,getFormatDatuma());
         String dan = nadjiDan(startd.getDayOfWeek().toString());
         for (Termin t:
                 getRaspored()) {
@@ -234,7 +218,7 @@ public class Implementation2 extends SpecifikacijaRasporeda {
                 e.printStackTrace();
             }
         } else if (s.endsWith(".csv")) {
-            FileWriter fileWriter = null;
+            FileWriter fileWriter;
             try {
                 fileWriter = new FileWriter(s);
                 CSVPrinter csvPrinter = new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
@@ -250,14 +234,13 @@ public class Implementation2 extends SpecifikacijaRasporeda {
                 for (Termin termin : getRaspored()) {
                     csvPrinter.printRecord(
                             termin.getAdditional().get("Dan"),
-                            termin.getStart().format(DateTimeFormatter.ofPattern("HH:mm")) + "-" +
-                                    termin.getEnd().format(DateTimeFormatter.ofPattern("HH:mm")),
-                            termin.getStart().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
-                            termin.getEnd().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")),
+                            termin.getStart().format(vremeFormater) + "-" +
+                                    termin.getEnd().format(vremeFormater),
+                            termin.getStart().format(datumFormater),
+                            termin.getEnd().format(datumFormater),
                             termin.getRoom().getNaziv(),
                             termin.getAdditional().get("Profesor"),
                             termin.getAdditional().get("Predmet")
-                            //termin.getRoom().getEquipment().get("racunar")
                     );
 
                 }
@@ -272,10 +255,10 @@ public class Implementation2 extends SpecifikacijaRasporeda {
 
     public  String pdf(Termin termin){
         return  termin.getAdditional().get("Dan") + ", " +
-                termin.getStart().format(DateTimeFormatter.ofPattern("HH:mm")) + "-" +
-                termin.getEnd().format(DateTimeFormatter.ofPattern("HH:mm")) + ", " +
-                termin.getStart().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")) + ", " +
-                termin.getEnd().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")) + ", " +
+                termin.getStart().format(vremeFormater) + "-" +
+                termin.getEnd().format(vremeFormater) + ", " +
+                termin.getStart().format(datumFormater) + ", " +
+                termin.getEnd().format(datumFormater) + ", " +
                 termin.getRoom().getNaziv() + ", " +
                 ispisiAdditional(termin.getAdditional(), false);
     }
@@ -283,10 +266,10 @@ public class Implementation2 extends SpecifikacijaRasporeda {
     public String terminString(Termin termin){
         return "Termin " +
                 "Dan=" + termin.getAdditional().get("Dan") +
-                ", Vreme=" + termin.getStart().format(DateTimeFormatter.ofPattern("HH:mm")) + "-" +
-                termin.getEnd().format(DateTimeFormatter.ofPattern("HH:mm")) +
-                ", Od=" + termin.getStart().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")) +
-                ", Do=" + termin.getEnd().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")) +
+                ", Vreme=" + termin.getStart().format(vremeFormater) + "-" +
+                termin.getEnd().format(vremeFormater) +
+                ", Od=" + termin.getStart().format(datumFormater) +
+                ", Do=" + termin.getEnd().format(datumFormater) +
                 ", Room=" + ispisiRoom(termin.getRoom()) + " " +
                 ispisiAdditional(termin.getAdditional(), true);
 

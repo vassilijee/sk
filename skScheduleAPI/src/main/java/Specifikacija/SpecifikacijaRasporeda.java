@@ -115,7 +115,13 @@ public abstract class SpecifikacijaRasporeda implements Specification {
 
     /**
      * pretragaTermina sluzi da pretrazimo raspored po zadatom kriterijumu za slobodne ili zauzete termine.
-     *
+     * @param start Datum pocetka termina u formatu zadatom u config fajlu
+     * @param end Datum pocetka zeljenog termina u formatu zadatom u config fajlu
+     * @param vremeod Vremenski pocetak zeljenog termina u formatu zadatom u config fajlu
+     * @param vremedo Vremenski kraj zeljenog termina u formatu zadatom u config fajlu
+     * @param roomName Naziv prostorije u kojoj se odrzava zeljeni termin
+     * @param additional Mapa dodataka vezano za termin gde je kljuc opisuje naziv tog dodatka a vrednost je vrednost tog dodatka po kojima zelite da potrazite odredjeni termin
+     * @param dayOfTheWeek Dan zeljenog termina
      * @return lista termina koji ispunjavaju zadati kriterijum
      */
 
@@ -128,8 +134,8 @@ public abstract class SpecifikacijaRasporeda implements Specification {
      * proveraZauzetostiUcionice sluzi da proverimo da li je zadata ucionica zauzeta odredjenog datuma u odredjenom terminu.
      *
      * @param naziv Naziv trazene ucinice
-     * @param start Datum i vreme pocetka zeljenog termina
-     * @param end   Datum i vreme zavrsetka zeljenog termina
+     * @param start Datum i vreme pocetka zeljenog termina u fortamtu zadatom u config fajlu
+     * @param end   Datum i vreme zavrsetka zeljenog termina u formtatu zadatom u config fajlu
      * @return true ako je zauzeta, false ako je slobodna
      */
     @Override
