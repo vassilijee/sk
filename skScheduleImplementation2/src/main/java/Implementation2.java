@@ -22,21 +22,23 @@ public class Implementation2 extends SpecifikacijaRasporeda {
     static {
         SpecifikacijaRasporedaManager.registerExporter(new Implementation2());
     }
-    DateTimeFormatter datumFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
-    DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
+    //DateTimeFormatter datumFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
+    //DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
     public Implementation2() {
         super();
     }
 
     @Override
-    public void addTermin(String start, String end, String ucionica, Map<String, String> additional) {
+    public int addTermin(String start, String end, String ucionica, Map<String, String> additional) {
         Termin termin = new Termin(LocalDateTime.parse(start, getFormatDatuma()),
                 LocalDateTime.parse(end, getFormatDatuma()), nadiSobuPoImenu(ucionica), additional);
         boolean flag = termin.getStart().getHour() >= getRadnoVremeOd().getHour() && termin.getEnd().getHour() <= getRadnoVremeDo().getHour() && getSveSobe().contains(termin.getRoom())
                 && !getNeradniDani().contains(termin.getStart().toLocalDate()) && !getNeradniDani().contains(termin.getEnd().toLocalDate());
         if(flag && provera(termin, null)){
             getRaspored().add(termin);
+            return 1;
         }
+        return -1;
     }
 
     public boolean provera(Termin termin, Termin termin2){
@@ -67,7 +69,7 @@ public class Implementation2 extends SpecifikacijaRasporeda {
     }
 
     @Override
-    public void moveTermin(String podaci) {
+    public int moveTermin(String podaci) {
         String terminZaBrisanje = StringUtils.substringBefore(podaci, "|");
         String oldstart;
         String oldend;
@@ -94,9 +96,9 @@ public class Implementation2 extends SpecifikacijaRasporeda {
         newroom = podaciListZaNovi.get(1).trim();
         newdan = podaciListZaNovi.get(2).trim();
         if(move(oldstart, oldend, oldroom, olddan, newstart, newend, newroom, newdan))
-            System.out.println("Uspesno");
+            return 1;
         else
-            System.out.println("Neuspesno");
+            return -1;
 
     }
 
@@ -127,6 +129,8 @@ public class Implementation2 extends SpecifikacijaRasporeda {
         List<Termin> termini = new ArrayList<>();
         LocalDate startd=null, endd=null;
         LocalTime  pocetak=null, kraj=null;
+        DateTimeFormatter datumFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
+        DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
         if(start!=null)
             startd = LocalDate.parse(start,datumFormater);
         if(end!=null)
@@ -214,6 +218,7 @@ public class Implementation2 extends SpecifikacijaRasporeda {
                 contentStream.close();
                 document.save(s);
                 document.close();
+                return true;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -231,6 +236,8 @@ public class Implementation2 extends SpecifikacijaRasporeda {
                 heder.add("Prodesor");
                 heder.add("Predmet");*/
                 csvPrinter.printRecord(heder);
+                DateTimeFormatter datumFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
+                DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
                 for (Termin termin : getRaspored()) {
                     csvPrinter.printRecord(
                             termin.getAdditional().get("Dan"),
@@ -246,14 +253,17 @@ public class Implementation2 extends SpecifikacijaRasporeda {
                 }
                 csvPrinter.close();
                 fileWriter.close();
+                return true;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-       return  true;
+       return  false;
     }
 
     public  String pdf(Termin termin){
+        DateTimeFormatter datumFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
+        DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
         return  termin.getAdditional().get("Dan") + ", " +
                 termin.getStart().format(vremeFormater) + "-" +
                 termin.getEnd().format(vremeFormater) + ", " +
@@ -264,6 +274,8 @@ public class Implementation2 extends SpecifikacijaRasporeda {
     }
 
     public String terminString(Termin termin){
+        DateTimeFormatter datumFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
+        DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
         return "Termin " +
                 "Dan=" + termin.getAdditional().get("Dan") +
                 ", Vreme=" + termin.getStart().format(vremeFormater) + "-" +

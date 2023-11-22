@@ -9,13 +9,13 @@ public interface Specification {
     //kreiranje rasporeda
     void initRaspored(String path);
 
-    void addRoom(String naziv, Map<String, String> equipment);
+    int addRoom(String naziv, Map<String, String> equipment);
 
-    void addTermin(String start, String end, String ucionica, Map<String, String> additional);
+    int addTermin(String start, String end, String ucionica, Map<String, String> additional);
 
-    void deleteTermin(String start, String end, String ucionica);
+    int deleteTermin(String start, String end, String ucionica);
 
-    void moveTermin(String podaci);
+    int moveTermin(String podaci);
 
     //pretrazivanje rasporeda
 

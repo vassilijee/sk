@@ -102,7 +102,7 @@ public class Main {
                     configPath = "impl1Resources/config.txt";
 //                    configPath = "config.txt";
 
-                    raspored.loadData(option, configPath);
+                    System.out.println(raspored.loadData(option, configPath));
 
                 } else if (option.equals("3")) {
                     String tmpOption1 = "";
@@ -129,7 +129,10 @@ public class Main {
                     additional.put("Kompjuter", "DA");
                     additional.put("Mikrafon", "NE");
 
-                    raspored.addRoom(option, additional);
+                    if(raspored.addRoom(option, additional)==1)
+                        System.out.println("Soba je upisana");
+                    else
+                        System.out.println("Takva soba vec postoji");
                 } else if (option.equals("4")) {
                     String start;
                     String end;
@@ -162,13 +165,17 @@ public class Main {
                     additional.put("Profesor", "asdasd");
 
 //                    predefinisan unos - impl2
-//                    start = "04/04/2002 10:00";
-//                    end = "06/04/2002 11:00";
-//                    roomName = "RAF1";
+//                    start = "12/11/2023 12:00";
+//                    end = "01/13/2024 14:00";
+//                    roomName = "RAF3";
 //                    additional.put("Dan", "petak");
-//                    additional.put("Profesor", "asdasd");
+//                    additional.put("Predmet", "OOP");
 
-                    raspored.addTermin(start, end, roomName, additional);
+                    if(raspored.addTermin(start, end, roomName, additional)==1)
+                        System.out.println("Termin je dodat");
+                    else
+                        System.out.println("Taj termin se vremenski vec poklapa sa postojecim terminima ili ne postoji navedena soba ili ste uneli za neradni dan");
+
                 } else if (option.equals("5")) {
                     System.out.println("exportData() - Eksportovanje je moguce u dva formata: .pdf, .csv");
                     System.out.println("\nUnesite putanju gde zelite da se sacuva fajl: ");
@@ -182,7 +189,7 @@ public class Main {
 //                    option = "export.txt";
 //                    option = "export.pdf";
 
-                    raspored.exportData(option);
+                    System.out.println(raspored.exportData(option));
                 } else if (option.equals("6")) {
                     String start;
                     String end;
@@ -203,11 +210,14 @@ public class Main {
                     roomName = "RAF1";
 
 //                    impl2 primer
-//                    start = "";
-//                    end = "";
-//                    roomName = "";
+//                    start = "12/11/2023 12:00";
+////                  end = "01/13/2024 14:00";
+////                  roomName = "RAF3";
 
-                    raspored.deleteTermin(start, end, roomName);
+                    if(raspored.deleteTermin(start, end, roomName)==1)
+                        System.out.println("Termin je obrisan");
+                    else
+                        System.out.println("Takva termin ne postoji u rasporedu");
                 } else if (option.equals("7")) {
                     System.out.println("moveTermin() - Pomeranje termina");
                     String podaci;
@@ -218,9 +228,12 @@ public class Main {
                     podaci = "29.10.2023 09:30 - 29.10.2023 12:30; RAF2|04.04.2002 10:00 - 04.04.2002 11:00; RAF6";
 
 //                    impl2 primer
-//                    podaci = "";
+//                    podaci = "11/12/2023 11:00 - 01/12/2024 13:00; RAF4; petak|11/12/2023 13:00 - 01/12/2024 15:00; RAF2; sreda;
 
-                    raspored.moveTermin(podaci);
+                    if(raspored.moveTermin(podaci)==1)
+                        System.out.println("Termin je premesten");
+                    else
+                        System.out.println("Termin se nije premestio zbog preklapanja sa drugim terminima");
                 } else if (option.equals("8")) {
                     String start;
                     String end;
@@ -282,11 +295,11 @@ public class Main {
                     additionall.put("Predmet", "SK");
                     System.out.println("Pronadjeni termini: \n" + raspored.pretragaTermina("29.10.2023", null, "15:15", null, null, additionall, null));
 
-//                    primer za impl2, vraca ...
+//                    primer za impl2, vraca jedan termin RAF4,sreda,10/01/2023 10:45,01/05/2024 13:45,VP,Milos Radenkovic,NE
 //                    Map<String, String> additionall = new HashMap<>();
 //                    additionall.put("Profesor", "Nikola Redzic");
 //                    additionall.put("Predmet", "SK");
-//                    System.out.println("Pronadjeni termini: \n" + raspored.pretragaTermina("29.10.2023", null, "15:15", null, null, additionall, null));
+//                    System.out.println("Pronadjeni termini: \n" + raspored.pretragaTermina(null, null, null, null, "RAF4", null, "sreda"));
 
                 } else if (option.equals("9")) {
                     String start;
@@ -308,9 +321,9 @@ public class Main {
                     end = "30.10.2023 16:00";
 
 //                    impl2 primer
-//                    roomName = "RAF2";
-//                    start = "30.10.2023 15:45";
-//                    end = "30.10.2023 16:00";
+//                    roomName = "RAF3";
+//                    start = "10/20/2023 14:20";
+//                    end = "10/20/2023 19:10";
 
                     if (raspored.provaraZauzetostiUcionice(roomName, start, end))
                         System.out.println("\nDati termin je zauzet");

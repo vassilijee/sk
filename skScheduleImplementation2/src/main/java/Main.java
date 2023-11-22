@@ -1,10 +1,12 @@
 
+import Specifikacija.SpecifikacijaRasporeda;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        Implementation2 implementacija = new Implementation2();
+        SpecifikacijaRasporeda implementacija = new Implementation2();
         implementacija.initRaspored("meta.txt");
         implementacija.loadData("termini.csv", "config.txt");
 
@@ -25,9 +27,9 @@ public class Main {
         System.out.println("\nRaspored: \n" + implementacija.ispisRasporeda(implementacija.getRaspored()));
         Map<String, String> c = new HashMap<>();
         c.put("Profesor", "Bojana Dimic Surla");
-        c.put("Predmet", "UUP");
-        System.out.println("\nPretraga: \n" + implementacija.ispisRasporeda(implementacija.pretragaTermina(null, null, null, null,"RAF4",null,null)));
-        System.out.println(implementacija.provaraZauzetostiUcionice("RAF3", "10/20/2023 14:20", "10/20/2023 19:10"));
+        c.put("Predmet", "UUP");*/
+        System.out.println("\nPretraga: \n" + implementacija.ispisRasporeda(implementacija.pretragaTermina(null, null, null, null,"RAF4",null,"sreda")));
+        /*System.out.println(implementacija.provaraZauzetostiUcionice("RAF3", "10/20/2023 14:20", "10/20/2023 19:10"));
         implementacija.move("11/12/2023 11:00", "01/12/2024 13:00", "RAF4", "petak", "11/12/2023 13:00", "01/12/2024 15:00", "RAF2", "sreda");
         System.out.println("\nPretraga: \n" + implementacija.ispisRasporeda(implementacija.getRaspored()));
         implementacija.exportData("termini3.csv");

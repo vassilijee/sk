@@ -66,12 +66,15 @@ public abstract class SpecifikacijaRasporeda implements Specification {
      *
      * @param naziv     Naziv prostorije.
      * @param equipment Mapa dodataka vezano za prosorije gde je kljuc opisuje naziv tog dodatka a vrednost je vrednost tog dodatka
-     * return(mora @ pre nego ne mogu sad da ga install dok je void klasa) Ukoliko se vec postoji prostorija sa tim nazivom vraca -1 a ukoliko jeste 1
+     * @return Ukoliko se vec postoji prostorija sa tim nazivom vraca -1 a ukoliko jeste 1
      */
     @Override
-    public void addRoom(String naziv, Map<String, String> equipment) {
+    public int addRoom(String naziv, Map<String, String> equipment) {
         Room room = new Room(naziv, equipment);
+        if(!sveSobe.contains(room))
+            return -1;
         sveSobe.add(room);
+        return 1;
     }
 
 
@@ -82,11 +85,11 @@ public abstract class SpecifikacijaRasporeda implements Specification {
      * @param end        Podaci o kraju termina koji se dodaje u formatu zadatom u config fajli.
      * @param ucionica   Naziv prostorije termina koji se dodaje.
      * @param additional Mapa dodataka vezano za prosorije gde je kljuc opisuje naziv tog dodatka a vrednost je vrednost tog dodatka
-     * return Ukoliko se termin nije dodao zbog nekog preklapanja ili nedozvoljenog datuma ili nepostojece ucuionice vraca -1 a ukolio se sve lepo dodalo vraca 1
+     * @return Ukoliko se termin nije dodao zbog nekog preklapanja ili nedozvoljenog datuma ili nepostojece ucuionice vraca -1 a ukolio se sve lepo dodalo vraca 1
      */
     @Override
-    public void addTermin(String start, String end, String ucionica, Map<String, String> additional) {
-
+    public int addTermin(String start, String end, String ucionica, Map<String, String> additional) {
+        return -1;
     }
 
     /**
@@ -95,22 +98,25 @@ public abstract class SpecifikacijaRasporeda implements Specification {
      * @param start    Podaci o pocetku termina koji ce se obrisati u formatu zadatom iz config fajla.
      * @param end      Podaci o kraju termina koji ce se obrisati u formatu zadatom iz config fajla.
      * @param ucionica Naziv prostorije termina koji ce se obrisati.
-     * return Vraca -1 ukoliko nije obrisao a 1 ukoliko jeste
+     * @return Vraca -1 ukoliko nije obrisao a 1 ukoliko jeste
      */
     @Override
-    public void deleteTermin(String start, String end, String ucionica) {
+    public int deleteTermin(String start, String end, String ucionica) {
+        if(nadjiTermin(start, end, ucionica) == null)
+            return -1;
         raspored.remove(nadjiTermin(start, end, ucionica));
+        return 1;
     }
 
     /**
      * moveTermin sluzi za pomeranje termina.
      *
      * @param podaci Podaci o terminima koje zelimo da promenimo u formatu 10/01/2023 13:15 - 12/01/2023 15:00; RAF3; petak(ukoliko je grupisajuci raspored uniste dan)|10/01/2023 11:15 - 12/01/2023 13:00; RAF6; sreda(ukoliko je grupisajuci raspored uniste dan).
-     * return Vraca -1 ukoliko termin nije pomeren a 1 ukoliko jeste
+     * @return Vraca -1 ukoliko termin nije pomeren a 1 ukoliko jeste
      */
     @Override
-    public void moveTermin(String podaci) {
-
+    public int moveTermin(String podaci) {
+        return -1;
     }
 
     /**
@@ -148,7 +154,7 @@ public abstract class SpecifikacijaRasporeda implements Specification {
      *
      * @param path       Putanja ka fajlu
      * @param configPath Putanja ka konfiguracionom fajlu
-     * @return ako je true vraca sadrzaj fajla, ako false ispisuje gresku
+     * @return Vraca true ako se fajl uspesno ucitao i false ukoliko nije
      */
     @Override
     public boolean loadData(String path, String configPath) {
@@ -178,7 +184,7 @@ public abstract class SpecifikacijaRasporeda implements Specification {
      * exportData sluzi za exportovanje rasporeda na zeljenu putanju.
      *
      * @param path Putanja ka destinicaji na koju zelimo da exportujemo raspored
-     * @return ako je true vraca upisano, ako false ispisuje gresku
+     * @return Vraca true ako se fajl uspesno sacuvao i false ukoliko nije
      */
     @Override
     public boolean exportData(String path) {
@@ -189,7 +195,13 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     public String toString() {
         return "SpecifikacijaRasporeda{" + "radnoVremeOd=" + radnoVremeOd + ", radnoVremeDo=" + radnoVremeDo + ", sveSobe=" + sveSobe + ", vaziOd=" + vaziOd + ", vaziDo=" + vaziDo + ", neradniDani=" + neradniDani + '}';
     }
-
+    /**
+     * readMeta sluzi za ucitavanje osnovnih podataka vezano za raspored kao sto je vremensko
+     * trajanje rasporeda, za koje prostorije vazi, kakve dodtake imaju prostorije i u principu
+     * svi podaci bez kojih raspored ne bi mogao da bude napravljen.
+     *
+     * @param filePath Putanja ka destinicaji iz koje zelimo da ucitamo podatke
+     */
     public void readMeta(String filePath) throws FileNotFoundException {
         File file = new File(filePath);
         Scanner scanner = new Scanner(file);
@@ -243,18 +255,35 @@ public abstract class SpecifikacijaRasporeda implements Specification {
         }
         scanner.close();
     }
-
+    /**
+     * nadiSobuPoImenu sluzi za nalazenje tacnog objeka Room klase koji ima takav naziv
+     *
+     * @param naziv Naziv trazene prostorije
+     * @return Room objekat ukoliko ga je pronasao ili null ukoliko nije
+     */
     public Room nadiSobuPoImenu(String naziv) {
         for (Room room : sveSobe) {
             if (room.getNaziv().equalsIgnoreCase(naziv)) return room;
         }
         return null;
     }
-
+    /**
+     * ispisRasporeda sluzi za ispisivanje liste termina u string
+     *
+     * @param raspored Lista termina koju zelimo da ispisemo
+     * @return Vraca podatke pretvorene u string
+     */
     public String ispisRasporeda(List<Termin> raspored) {
         return raspored.toString();
     }
-
+    /**
+     * nadjiTermin sluzi za nalazenje tacnog objeka Termin klase koji ima zadati pocetak, kraj i prostoriju
+     *
+     * @param start Datum i vreme kada pocinje termin
+     * @param end Datum i vreme kada se zavrsava termin
+     * @param room Naziv prostorje u kojoj se odrzava termin
+     * @return Vraca pronadjen termin ukoliko postoji ili null ukoliko ne postoji
+     */
     public Termin nadjiTermin(String start, String end, String room) {
         for (Termin termin : raspored) {
             if (termin.getStart().equals(LocalDateTime.parse(start, formatDatuma))

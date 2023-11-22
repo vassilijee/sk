@@ -34,12 +34,13 @@ public class Implementation1 extends SpecifikacijaRasporeda {
 
 
     @Override
-    public void addTermin(String start, String end, String roomNaziv, Map<String, String> additional) {
-        dodajNoviTermin(start, end, roomNaziv, additional);
+    public int addTermin(String start, String end, String roomNaziv, Map<String, String> additional) {
+        return dodajNoviTermin(start, end, roomNaziv, additional);
+
     }
 
     //  https://stackoverflow.com/questions/325933/determine-whether-two-date-ranges-overlap
-    public void dodajNoviTermin(String start, String end, String roomNaziv, Map<String, String> additional) {
+    public int dodajNoviTermin(String start, String end, String roomNaziv, Map<String, String> additional) {
         LocalDateTime startDateTime = LocalDateTime.parse(start, getFormatDatuma());
         LocalDateTime endDateTime = LocalDateTime.parse(end, getFormatDatuma());
         boolean flagPostojiSoba = true;
@@ -51,8 +52,9 @@ public class Implementation1 extends SpecifikacijaRasporeda {
         }
 
         if (getNeradniDani().contains(startDateTime.toLocalDate()) || getNeradniDani().contains(endDateTime.toLocalDate()) || startDateTime.toLocalTime().isAfter(getRadnoVremeDo()) || endDateTime.toLocalTime().isAfter(getRadnoVremeDo()) || startDateTime.toLocalTime().isBefore(getRadnoVremeOd()) || flagPostojiSoba) {
-            System.out.println("Termin je u nedozvoljeno vreme ili u nepostojecoj sobi. ");
-            System.out.println(flagPostojiSoba);
+//            System.out.println("Termin je u nedozvoljeno vreme ili u nepostojecoj sobi. ");
+//            System.out.println(flagPostojiSoba);
+            return -1;
 
         } else {
             Termin tmpTermin = new Termin();
@@ -63,7 +65,8 @@ public class Implementation1 extends SpecifikacijaRasporeda {
             tmpTermin.setRoom(tmpRoom);
 
             if (proveraPreklapanjaTermina(tmpTermin) != null) {
-                System.out.println("U rasporedu postoji termin: " + proveraPreklapanjaTermina(tmpTermin));
+//                System.out.println("U rasporedu postoji termin: " + proveraPreklapanjaTermina(tmpTermin));
+                return -1;
             }
 
             proveraPostojiLiZadataSoba(roomNaziv);
@@ -77,6 +80,7 @@ public class Implementation1 extends SpecifikacijaRasporeda {
 
             System.out.println("Dodat je novi termin: \n" + tmpTermin);
         }
+        return 1;
     }
 
     private boolean proveraPostojiLiZadataSoba(String roomNaziv) {
@@ -119,6 +123,7 @@ public class Implementation1 extends SpecifikacijaRasporeda {
                     fileWriter.write(line.toString());
                 }
                 fileWriter.close();
+                return true;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -133,6 +138,7 @@ public class Implementation1 extends SpecifikacijaRasporeda {
                 }
                 csvPrinter.close();
                 fileWriter.close();
+                return true;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -149,6 +155,7 @@ public class Implementation1 extends SpecifikacijaRasporeda {
                 byte[] data = out.toByteArray();
                 fileWriter.write(new String(data));
                 fileWriter.close();
+                return true;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -170,11 +177,12 @@ public class Implementation1 extends SpecifikacijaRasporeda {
 //                contentStream.close();
 //                document.save(s);
 //                document.close();
+//                return true;
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
         }
-        return true;
+        return false;
     }
 
     public String pdf(Termin termin) {
@@ -191,7 +199,7 @@ public class Implementation1 extends SpecifikacijaRasporeda {
     }
 
     @Override
-    public void moveTermin(String podaci) {
+    public int moveTermin(String podaci) {
         String terminZaBrisanje = StringUtils.substringBefore(podaci, "|");
         String startOdZaBrisanje;
         String endOdZaBrisanje;
@@ -214,7 +222,9 @@ public class Implementation1 extends SpecifikacijaRasporeda {
         endOdZeljeniNovi = StringUtils.substringAfter(podaciListZaNovi.get(0), "- ");
         roomNazivOdZeljeniNovi = podaciListZaNovi.get(1).trim();
 
-        menjajTermine(startOdZaBrisanje, endOdZaBrisanje, roomNazivOdZaBrisanje, startOdZeljeniNovi, endOdZeljeniNovi, roomNazivOdZeljeniNovi);
+        if(menjajTermine(startOdZaBrisanje, endOdZaBrisanje, roomNazivOdZaBrisanje, startOdZeljeniNovi, endOdZeljeniNovi, roomNazivOdZeljeniNovi))
+            return 1;
+        return -1;
     }
 
     private boolean menjajTermine(String startOdZaBrisanje, String endOdZaBrisanje, String roomNazivOdZaBrisanje, String startOdZeljeniNovi, String endOdZeljeniNovi, String roomNazivOdZeljeniNovi) {
