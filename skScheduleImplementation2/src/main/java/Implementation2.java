@@ -23,7 +23,7 @@ public class Implementation2 extends SpecifikacijaRasporeda {
         SpecifikacijaRasporedaManager.registerExporter(new Implementation2());
     }
     //DateTimeFormatter datumFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
-    //DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
+    //DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringAfter(getFormatDatumaAsString()," "));
     public Implementation2() {
         super();
     }
@@ -130,7 +130,7 @@ public class Implementation2 extends SpecifikacijaRasporeda {
         LocalDate startd=null, endd=null;
         LocalTime  pocetak=null, kraj=null;
         DateTimeFormatter datumFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
-        DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
+        DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringAfter(getFormatDatumaAsString()," "));
         if(start!=null)
             startd = LocalDate.parse(start,datumFormater);
         if(end!=null)
@@ -237,7 +237,7 @@ public class Implementation2 extends SpecifikacijaRasporeda {
                 heder.add("Predmet");*/
                 csvPrinter.printRecord(heder);
                 DateTimeFormatter datumFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
-                DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
+                DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringAfter(getFormatDatumaAsString()," "));
                 for (Termin termin : getRaspored()) {
                     csvPrinter.printRecord(
                             termin.getAdditional().get("Dan"),
@@ -263,7 +263,7 @@ public class Implementation2 extends SpecifikacijaRasporeda {
 
     public  String pdf(Termin termin){
         DateTimeFormatter datumFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
-        DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
+        DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringAfter(getFormatDatumaAsString()," "));
         return  termin.getAdditional().get("Dan") + ", " +
                 termin.getStart().format(vremeFormater) + "-" +
                 termin.getEnd().format(vremeFormater) + ", " +
@@ -275,7 +275,7 @@ public class Implementation2 extends SpecifikacijaRasporeda {
 
     public String terminString(Termin termin){
         DateTimeFormatter datumFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
-        DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringBefore(getFormatDatumaAsString()," "));
+        DateTimeFormatter vremeFormater = DateTimeFormatter.ofPattern(StringUtils.substringAfter(getFormatDatumaAsString()," "));
         return "Termin " +
                 "Dan=" + termin.getAdditional().get("Dan") +
                 ", Vreme=" + termin.getStart().format(vremeFormater) + "-" +

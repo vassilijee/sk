@@ -64,11 +64,11 @@ public class Main {
 //                    option = scanner.nextLine();
 
 //                    za Windows apsolutna putanja
-//                    option = "C:\\Users\\Lana\\Desktop\\sk_git\\sk\\skScheduleTest\\impl1Resources\\meta.txt";
-//                    option = "C:\\Users\\Lana\\Desktop\\sk_git\\sk\\skScheduleTest\\impl2Resources\\meta.txt";
+//                    option = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl1Resources\\meta.txt";
+                    option = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl2Resources\\meta.txt";
 
 //                    za Mac apsolutna putanja
-                    option = "impl1Resources/meta.txt";
+//                    option = "impl1Resources/meta.txt";
 //                    option = "impl2Resources/meta.txt";
 
                     raspored.initRaspored(option);
@@ -82,11 +82,11 @@ public class Main {
 //                    option = scanner.nextLine();
 
 //                    za Windows apsolutna putanja
-//                    option = "C:\\Users\\Lana\\Desktop\\sk_git\\sk\\skScheduleTest\\impl1Resources\\terminii.csv";
-//                    option = "C:\\Users\\Lana\\Desktop\\sk_git\\sk\\skScheduleTest\\impl2Resources\\termini.csv";
+//                    option = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl1Resources\\terminii.csv";
+                    option = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl2Resources\\termini.csv";
 
 //                    za Mac apsolutna putanja
-                    option = "impl1Resources/terminii.csv";
+//                    option = "impl1Resources/terminii.csv";
 //                    option = "impl2Resources/termini.csv";
 
                     String configPath = "";
@@ -95,11 +95,11 @@ public class Main {
 //                    configPath = scanner.nextLine();
 
 //                    za Windows apsolutna putanja
-//                    configPath = "C:\\Users\\Lana\\Desktop\\sk_git\\sk\\skScheduleTest\\impl1Resources\\config.txt";
-//                    configPath = "C:\\Users\\Lana\\Desktop\\sk_git\\sk\\skScheduleTest\\impl2Resources\\termini.txt";
+//                    configPath = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl1Resources\\config.txt";
+                    configPath = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl2Resources\\config.txt";
 
 //                    za Mac apsolutna putanja
-                    configPath = "impl1Resources/config.txt";
+//                    configPath = "impl1Resources/config.txt";
 //                    configPath = "config.txt";
 
                     System.out.println(raspored.loadData(option, configPath));
