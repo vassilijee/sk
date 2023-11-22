@@ -64,8 +64,8 @@ public class Main {
 //                    option = scanner.nextLine();
 
 //                    za Windows apsolutna putanja
-//                    option = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl1Resources\\meta.txt";
-                    option = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl2Resources\\meta.txt";
+                    option = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl1Resources\\meta.txt";
+//                    option = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl2Resources\\meta.txt";
 
 //                    za Mac apsolutna putanja
 //                    option = "impl1Resources/meta.txt";
@@ -82,8 +82,8 @@ public class Main {
 //                    option = scanner.nextLine();
 
 //                    za Windows apsolutna putanja
-//                    option = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl1Resources\\terminii.csv";
-                    option = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl2Resources\\termini.csv";
+                    option = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl1Resources\\terminii.csv";
+//                    option = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl2Resources\\termini.csv";
 
 //                    za Mac apsolutna putanja
 //                    option = "impl1Resources/terminii.csv";
@@ -95,8 +95,8 @@ public class Main {
 //                    configPath = scanner.nextLine();
 
 //                    za Windows apsolutna putanja
-//                    configPath = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl1Resources\\config.txt";
-                    configPath = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl2Resources\\config.txt";
+                    configPath = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl1Resources\\config.txt";
+//                    configPath = "C:\\Users\\Lana\\Desktop\\Komponente\\sk\\skScheduleTest\\impl2Resources\\config.txt";
 
 //                    za Mac apsolutna putanja
 //                    configPath = "impl1Resources/config.txt";
@@ -128,8 +128,8 @@ public class Main {
                     option = "RAF100";
                     additional.put("Kompjuter", "DA");
                     additional.put("Mikrafon", "NE");
-
-                    if(raspored.addRoom(option, additional)==1)
+                    int a = raspored.addRoom(option, additional);
+                    if(a==1)
                         System.out.println("Soba je upisana");
                     else
                         System.out.println("Takva soba vec postoji");
@@ -159,17 +159,17 @@ public class Main {
 //                    }
 
 //                    predefinisan unos - impl1
-                    start = "04.04.2002 10:00";
-                    end = "04.04.2002 11:00";
-                    roomName = "RAF1";
-                    additional.put("Profesor", "asdasd");
+//                    start = "04.04.2002 10:00";
+//                    end = "04.04.2002 11:00";
+//                    roomName = "RAF1";
+//                    additional.put("Profesor", "asdasd");
 
 //                    predefinisan unos - impl2
-//                    start = "12/11/2023 12:00";
-//                    end = "01/13/2024 14:00";
-//                    roomName = "RAF3";
-//                    additional.put("Dan", "petak");
-//                    additional.put("Predmet", "OOP");
+                    start = "12/11/2023 12:00";
+                    end = "01/13/2024 14:00";
+                    roomName = "RAF3";
+                    additional.put("Dan", "petak");
+                    additional.put("Predmet", "OOP");
 
                     if(raspored.addTermin(start, end, roomName, additional)==1)
                         System.out.println("Termin je dodat");
@@ -185,9 +185,9 @@ public class Main {
 
 //                    predefinisane opcije
 //                    option = "export.csv";
-                    option = "export.json";
+//                    option = "export.json";
 //                    option = "export.txt";
-//                    option = "export.pdf";
+                    option = "export.pdf";
 
                     System.out.println(raspored.exportData(option));
                 } else if (option.equals("6")) {
@@ -205,14 +205,14 @@ public class Main {
 //                    roomName = scanner.nextLine();
 
 //                    impl1 primer - brise prvi termin iz loada - RAF1,29.10.2023 09:15,29.10.2023 11:15,UUP,Mladen Jovanovic,DA
-                    start = "29.10.2023 09:15";
-                    end = "29.10.2023 11:15";
-                    roomName = "RAF1";
+//                    start = "29.10.2023 09:15";
+//                    end = "29.10.2023 11:15";
+//                    roomName = "RAF1";
 
 //                    impl2 primer
-//                    start = "12/11/2023 12:00";
-////                  end = "01/13/2024 14:00";
-////                  roomName = "RAF3";
+                    start = "12/11/2023 12:00";
+                  end = "01/13/2024 14:00";
+                  roomName = "RAF3";
 
                     if(raspored.deleteTermin(start, end, roomName)==1)
                         System.out.println("Termin je obrisan");
@@ -228,7 +228,7 @@ public class Main {
                     podaci = "29.10.2023 09:30 - 29.10.2023 12:30; RAF2|04.04.2002 10:00 - 04.04.2002 11:00; RAF6";
 
 //                    impl2 primer
-//                    podaci = "11/12/2023 11:00 - 01/12/2024 13:00; RAF4; petak|11/12/2023 13:00 - 01/12/2024 15:00; RAF2; sreda;
+//                    podaci = "11/12/2023 11:00 - 01/12/2024 13:00; RAF4; petak|11/12/2023 11:00 - 01/12/2024 12:00; RAF2; sreda";
 
                     if(raspored.moveTermin(podaci)==1)
                         System.out.println("Termin je premesten");
@@ -290,16 +290,16 @@ public class Main {
 
 
 //                    primer za impl1, vraca samo jedan termin - Termin{start=2023-10-30T15:15, end=2023-10-30T17:15, room=Room{naziv='RAF1', equipment={mikrofon=DA, racunar=DA}}, additional={Profesor=Nikola Redzic, Predmet=SK}}
-                    Map<String, String> additionall = new HashMap<>();
-                    additionall.put("Profesor", "Nikola Redzic");
-                    additionall.put("Predmet", "SK");
-                    System.out.println("Pronadjeni termini: \n" + raspored.pretragaTermina("29.10.2023", null, "15:15", null, null, additionall, null));
-
-//                    primer za impl2, vraca jedan termin RAF4,sreda,10/01/2023 10:45,01/05/2024 13:45,VP,Milos Radenkovic,NE
 //                    Map<String, String> additionall = new HashMap<>();
 //                    additionall.put("Profesor", "Nikola Redzic");
 //                    additionall.put("Predmet", "SK");
-//                    System.out.println("Pronadjeni termini: \n" + raspored.pretragaTermina(null, null, null, null, "RAF4", null, "sreda"));
+//                    System.out.println("Pronadjeni termini: \n" + raspored.pretragaTermina("29.10.2023", null, "15:15", null, null, additionall, null));
+
+//                    primer za impl2, vraca jedan termin RAF4,sreda,10/01/2023 10:45,01/05/2024 13:45,VP,Milos Radenkovic,NE
+                    Map<String, String> additionall = new HashMap<>();
+                    additionall.put("Profesor", "Nikola Redzic");
+                    additionall.put("Predmet", "SK");
+                    System.out.println("Pronadjeni termini: \n" + raspored.pretragaTermina(null, null, null, null, "RAF4", null, "sreda"));
 
                 } else if (option.equals("9")) {
                     String start;
@@ -316,14 +316,14 @@ public class Main {
 //                    roomName = scanner.nextLine();
 
 //                     impl1 primer
-                    roomName = "RAF2";
-                    start = "30.10.2023 15:45";
-                    end = "30.10.2023 16:00";
+//                    roomName = "RAF2";
+//                    start = "30.10.2023 15:45";
+//                    end = "30.10.2023 16:00";
 
 //                    impl2 primer
-//                    roomName = "RAF3";
-//                    start = "10/20/2023 14:20";
-//                    end = "10/20/2023 19:10";
+                    roomName = "RAF3";
+                    start = "10/20/2023 14:20";
+                    end = "10/20/2023 19:10";
 
                     if (raspored.provaraZauzetostiUcionice(roomName, start, end))
                         System.out.println("\nDati termin je zauzet");

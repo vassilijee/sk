@@ -71,7 +71,7 @@ public abstract class SpecifikacijaRasporeda implements Specification {
     @Override
     public int addRoom(String naziv, Map<String, String> equipment) {
         Room room = new Room(naziv, equipment);
-        if(!sveSobe.contains(room))
+        if(sveSobe.contains(room))
             return -1;
         sveSobe.add(room);
         return 1;

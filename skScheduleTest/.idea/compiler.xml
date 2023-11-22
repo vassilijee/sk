@@ -7,7 +7,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="skScheduleAPI" />
+        <module name="impl1" />
         <module name="skScheduleTest" />
+        <module name="skScheduleImplementation2" />
       </profile>
     </annotationProcessing>
   </component>

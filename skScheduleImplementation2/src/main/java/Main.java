@@ -17,12 +17,12 @@ public class Main {
         a.put("Dan", "petak");
         a.put("Predmet", "OOP");
         implementacija.addTermin("12/11/2023 12:00", "01/13/2024 14:00", "RAF3", a);
-        System.out.println("\nRaspored: \n" + implementacija.ispisRasporeda(implementacija.getRaspored()));/*
+        System.out.println("\nRaspored: \n" + implementacija.ispisRasporeda(implementacija.getRaspored()));
         Map<String, String> b = new HashMap<>();
         b.put("racunar", "NE");
         b.put("mikrofon", "DA");
-        implementacija.addRoom("RAF30", b);
-        System.out.println("\nUcionice: \n" + implementacija.getSveSobe());
+        System.out.println(implementacija.addRoom("RAF30", b));
+        System.out.println("\nUcionice: \n" + implementacija.getSveSobe());/*
         implementacija.deleteTermin("12/11/2023 12:00", "01/13/2024 14:00", "RAF3");
         System.out.println("\nRaspored: \n" + implementacija.ispisRasporeda(implementacija.getRaspored()));
         Map<String, String> c = new HashMap<>();

@@ -243,21 +243,19 @@ public class Implementation1 extends SpecifikacijaRasporeda {
             System.out.println("Ne postoji zadata soba za novi termin. ");
         }
 
-        Termin tmpTerminZaBrisanje = new Termin();
-        Room tmpRoomzaBrisanje = new Room(roomNazivOdZaBrisanje);
-        tmpTerminZaBrisanje.setStart(LocalDateTime.parse(startOdZaBrisanje, getFormatDatuma()));
-        tmpTerminZaBrisanje.setEnd(LocalDateTime.parse(endOdZaBrisanje, getFormatDatuma()));
-        tmpTerminZaBrisanje.setRoom(tmpRoomNovi);
+        Termin tmpTerminZaBrisanje = nadjiTermin(startOdZaBrisanje,endOdZaBrisanje, roomNazivOdZaBrisanje);
+//        Room tmpRoomzaBrisanje = new Room(roomNazivOdZaBrisanje);
+//        tmpTerminZaBrisanje.setStart(LocalDateTime.parse(startOdZaBrisanje, getFormatDatuma()));
+//        tmpTerminZaBrisanje.setEnd(LocalDateTime.parse(endOdZaBrisanje, getFormatDatuma()));
+//        tmpTerminZaBrisanje.setRoom(tmpRoomNovi);
 
-        for (Room room : getSveSobe()) {
-            if (room.equals(tmpRoomzaBrisanje)) tmpTerminZaBrisanje.setRoom(room);
-        }
+//        for (Room room : getSveSobe()) {
+//            if (room.equals(tmpRoomzaBrisanje)) tmpTerminZaBrisanje.setRoom(room);
+//        }
 
         //additional se prebacuje sa starog termina
         Map<String, String> additionalOdStarog = new HashMap<>();
-        for (Termin terminIzRasporeda : getRaspored()) {
-            additionalOdStarog = terminIzRasporeda.getAdditional();
-        }
+        additionalOdStarog.putAll(tmpTerminZaBrisanje.getAdditional());
         System.out.println("MENJANJE\nMenja se: \n" + tmpTerminZaBrisanje + "\nza: \n" + tmpTerminNovi);
 
         deleteTermin(startOdZaBrisanje, endOdZaBrisanje, roomNazivOdZaBrisanje);

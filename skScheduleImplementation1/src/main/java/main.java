@@ -19,8 +19,8 @@ public class main {
         HashMap<String, String> equipment = new HashMap<>();
         equipment.put("mikrafon", "DADA");
         equipment.put("Kompjuter", "DADA");
-        raspored.addRoom("RAF20", equipment);
-
+        System.out.println(raspored.addRoom("RAF20", equipment));
+        System.out.println(raspored.getSveSobe());
         //addTermin()
         Map<String, String> additional = new HashMap<>();
         additional.put("PREDMET", "UUP");
